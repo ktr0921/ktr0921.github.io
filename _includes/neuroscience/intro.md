@@ -1,0 +1,3 @@
+Perception is *not true reality*, but at least, it is *our reality*. We have no mean to apprehend the true reality, but only to merely estimate the reality from the observation in a limited and distorted way using *our brain*.
+
+**Neuroscience** is the study of the human brain and nervous system, which includes 1) sensing the world, 2) feeling the emotion, 3) forming the memory, 4) processing the logic, and 5) moving the muscle. It is said that if the body is the hardware, the nervous system is the software. Neuroscience combines knowledge from various disciplines to explore the complexity of the human brain and nervous system.

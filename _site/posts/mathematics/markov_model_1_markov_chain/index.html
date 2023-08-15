@@ -1,0 +1,1817 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Markov Chain - Kel’Logg</title>
+<meta name="description" content="A Markov chain is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recognition, time series forecasting, bioinformatics, game theories and many more. This post aims to provide a tutorial on a Markov chain and introduce a commonly used variant, a hidden Markov model.">
+
+
+  <meta name="author" content="D. K. Ryu">
+  
+  <meta property="article:author" content="D. K. Ryu">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kel'Logg">
+<meta property="og:title" content="Markov Chain">
+<meta property="og:url" content="http://localhost:4000/posts/mathematics/markov_model_1_markov_chain/">
+
+
+  <meta property="og:description" content="A Markov chain is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recognition, time series forecasting, bioinformatics, game theories and many more. This post aims to provide a tutorial on a Markov chain and introduce a commonly used variant, a hidden Markov model.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-15T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2023-04-15T00:00:00+09:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/posts/mathematics/markov_model_1_markov_chain/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kel'Logg Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Kel'Logg
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/mathematics/">Mathematics</a>
+            </li><li class="masthead__menu-item">
+              <a href="/neuroscience/">Neuroscience</a>
+            </li><li class="masthead__menu-item">
+              <a href="/machine_learning/">Machine Learning</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/bio-photo.jpg" alt="D. K. Ryu" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">D. K. Ryu</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Ph.D. candidate in reinforcement learning and natural language processing</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="www.linkedin.com/in/dkryu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/ktr0921" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:dongwon.ryu@monash.edu" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Markov Chain">
+    <meta itemprop="description" content="A Markov chain is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recognition, time series forecasting, bioinformatics, game theories and many more. This post aims to provide a tutorial on a Markov chain and introduce a commonly used variant, a hidden Markov model.">
+    <meta itemprop="datePublished" content="2022-09-15T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2023-04-15T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Markov Chain
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          35 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Table of Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#markov-chain">Markov Chain</a><ul><li><a href="#absorption">Absorption</a></li><li><a href="#recurrence">Recurrence</a></li><li><a href="#periodicity">Periodicity</a></li><li><a href="#ergodicity">Ergodicity</a></li></ul></li><li><a href="#markov-chain-example">Markov Chain Example</a><ul><li><a href="#absorbing-markov-chain">Absorbing Markov Chain</a></li><li><a href="#periodic-markov-chain">Periodic Markov Chain</a></li><li><a href="#ergodic-markov-chain">Ergodic Markov Chain</a></li></ul></li><li><a href="#hidden-markov-model">Hidden Markov Model</a><ul><li><a href="#inference">Inference</a></li><li><a href="#baum-welch-algorithm">Baum-Welch Algorithm</a></li></ul></li><li><a href="#summary">Summary</a><ul><li><a href="#reference">Reference</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        
+<div class="notice--primary">
+  
+<p><strong>Prerequisites</strong></p>
+
+<ul>
+  <li>Basic probability</li>
+</ul>
+
+</div>
+
+<blockquote>
+    All is number.
+    <br />
+    <cite>Pythagoras</cite>
+</blockquote>
+
+<p>Humans have invented and developed languages to symbolize entities, constructing <em>Matrix</em> that captures the essence of reality. On the other hand, any form of entities can be modelled as <em>number</em>, from natural to complex numbers and from points to objects, which existed long before human civilization. Thereby, the universe itself is inherently number, or in short, <em>all is number</em>.</p>
+
+<p><strong>Mathematics</strong> is the study of numbers, so if an entity exists, there exists mathematics to describe it, even if we cannot perceive. This is why we (arguably) refer mathematics as <em>discovery</em> instead of <em>invention</em> and often considered the most fundamental and precise way of describing reality. Mathematics is a vast, diverse and abstract field such that it requires books of worth. Here, a few branches of mathematics are focused on.</p>
+
+<p>A <strong>Markov model</strong> is a stochastic process that describes pseudo-randomly changing systems under the <strong>Markov property</strong>, or the Markov assumption. The Markov property stipulates the future state depends only on the current state, not the history of states. There are four common Markov models:</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 200px"> </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <b>Fully Observable</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <b>Partially Observable</b>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 200px">
+            <b>Autonomous System</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <a href="/posts/mathematics/markov_model_1_markov_chain/#markov-chain">Markov Chain</a>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <a href="/posts/mathematics/markov_model_1_markov_chain/#hidden-markov-model">Hidden Markov Model</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 200px"> <b>Controllable System</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <a href="/posts/mathematics/markov_model_2_markov_decision_process/#markov-decision-process">Markov Decision Process</a>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <a href="/posts/mathematics/markov_model_2_markov_decision_process/#partial-observabiliby">Partially Observable Markov Decision Process</a>
+        </td>
+    </tr>
+</table>
+
+<p>A <strong>Markov chain</strong> is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recognition, time series forecasting, bioinformatics, game theories and many more. This post aims to provide a tutorial on a Markov chain and introduce a commonly used variant, a hidden Markov model.</p>
+
+<h1 id="markov-chain">Markov Chain</h1>
+
+<p>A <strong>Markov chain (MC)</strong>, or Markov process, is the simplest form of a Markov model. In an MC, there exists a system that starts at a particular state, and every time step, the system travels to neighbouring states within the MC.</p>
+
+<p>The Markov property is formally defined as following. There exists a <strong>state</strong>, \(s \in \mathcal{S}\), and a <strong>transition probability</strong>, \(p \in \mathcal{P}\), such that:</p>
+
+\[\begin{equation}
+    \Pr ( S_{t+1} = s_{t+1} \vert S_{0:t} = s_{0:t} )
+    \equiv p ( S_{t+1} = s_{t+1} \vert S_{t} = s_{t} )
+    = p ( s_{t+1} \vert s_{t} )
+\end{equation}\]
+
+<p>Where \(S_{0:t} = s_{0:t}\) signifies a sequence of states that the system visits from \(0\) to \(t\) time, \(S_{0} = s_{0} , \cdots , S_{t} = s_{t}\). A collection of states that the system visited for a given maximum time, \(T\), is referred to as a <strong>path</strong>, \(\{ S_{0} = s_{0} , \cdots S_{T} = s_{T} \}\). Unlike computer science, people from mathematics often refer to a state as an event or a process with \(\{ X_{t} \}_{t=0}^{T}\) notation.</p>
+
+<p>The Markov property assumes that the probability of transitioning between two states is only dependent on the one-step previously visited states, not on the history of all the previously visited states. This allows us to formalize the transition probabilities as a fixed transition matrix, \(\mathbf{P}\):</p>
+
+\[\begin{equation}
+    \mathbf{P}
+    = \begin{bmatrix}
+        p ( s_{1} \vert s_{1} ) &amp; p ( s_{2} \vert s_{1} ) &amp; \cdots &amp; p ( s_{n} \vert s_{1} ) \\
+        p ( s_{1} \vert s_{2} ) &amp; p ( s_{2} \vert s_{2} ) &amp; \cdots &amp; p ( s_{n} \vert s_{2} ) \\
+        \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+        p ( s_{1} \vert s_{n} ) &amp; p ( s_{2} \vert s_{n} ) &amp; \cdots &amp; p ( s_{n} \vert s_{n} ) \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>Consider the following MC.</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 350px" colspan="2">
+            Example Markov Chain from
+            <a href="https://commons.wikimedia.org/wiki/File:Markovkate_01.svg">
+                Wikimedia Commons
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 200px">
+            <img src="/assets/mathematics/markov_model_1_markov_chain/1_mc.png" />
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 150px">
+            $$
+            \begin{align}
+                \mathbf{P}
+                &amp; = \begin{bmatrix}
+                    p ( E \vert E ) &amp; p ( A \vert E ) \\
+                    p ( E \vert A ) &amp; p ( A \vert A ) \\
+                \end{bmatrix}
+                \\
+                &amp; = \begin{bmatrix}
+                    0.3 &amp; 0.7 \\
+                    0.4 &amp; 0.6 \\
+                \end{bmatrix}
+            \end{align}
+            $$
+        </td>
+    </tr>
+</table>
+
+<p>\(\mathbf{P}\) is what determines the property of a state in an MC, and moreover, the property of an MC. However, \(\mathbf{P}\) is not really intuitive, so instead, we usually analyze the accessibility of states from each other, referred to as <strong>communication</strong>.</p>
+
+<ul>
+  <li>If \(s_{i}\) communicates with itself, \(s_{i} \leftrightarrow s_{i}\).</li>
+  <li>If \(s_{i}\) communicates with \(s_{j}\), \(s_{i} \leftrightarrow s_{j}\).</li>
+  <li>If \(s_{i}\) communicates with \(s_{k}\) through \(s_{j}\), \(s_{i} \leftrightarrow s_{j}\) and \(s_{j} \leftrightarrow s_{k}\), then \(s_{i} \leftrightarrow s_{k}\).</li>
+</ul>
+
+<p>With these, we can determine the property of an MC. Few additional important concepts in an MC are:</p>
+<ul>
+  <li>A <strong>closed set</strong> is a set of states that the system cannot entre or leave.
+    <ul>
+      <li>A set includes a single element as well, so a state alone can be a closed set.</li>
+    </ul>
+  </li>
+  <li>An <strong>initial distribution</strong> is a probability distribution over states that the system starts. It is a row vector, \(\pi^{(0)} \in \mathbb{R}^{n}\).
+    <ul>
+      <li>The proability of the system visiting states at \(k\) step for a given \(\pi^{(0)}\) is \(\pi^{(0)} \mathbf{P}^{k}\).</li>
+    </ul>
+  </li>
+  <li>A <strong>stationary distribution</strong> is an equilibrium probability distribution over states that do not change over time. It is a row vector, \(\pi \in \mathbb{R}^{n}\).
+    <ul>
+      <li>\(\pi\) is the left eigenvector for \(\mathbf{P}\), or \(\pi = \pi \mathbf{P}\).</li>
+      <li>There may exist more than one \(\pi\) depending on the perperty of an MC.</li>
+    </ul>
+  </li>
+  <li>A <strong>limiting distribution</strong> is a unique non-zero equilibrium probability distribution over states that the system will end up if it travels infinitely. It is a row vector, \(\pi^{(\infty)} \in \mathbb{R}^{n}\).
+    <ul>
+      <li>\(\pi^{(\infty)}\) is the proability of the system visiting states at an infinite step for a given \(\pi^{(0)}\), or \(\pi^{(\infty)} = \pi^{(0)} \mathbf{P}^{\infty}\).</li>
+      <li>Similar to \(\pi\), \(\pi^{(\infty)}\) is the left eigenvector for \(\mathbf{P}\), or \(\pi^{(\infty)} = \pi^{(\infty)} \mathbf{P}\).</li>
+      <li>Unlike \(\pi^{(0)}\) and \(\pi\), \(\pi^{(\infty)}\) may not exist depending on the property of an MC. If \(\pi^{(\infty)}\) exists, it is unique and equivalent to \(\pi\), or \(\pi^{(\infty)} = \pi\).
+        <ul>
+          <li>In other words, if \(\pi^{(\infty)}\) exists, there only exists a single \(\pi\) such that \(\pi = \pi^{(\infty)}\).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Usually, \(\mathbf{P}\) is used to determine:</p>
+<ul>
+  <li>Whether a particular state communicates with other states.</li>
+  <li>The characteristics of the stationary distribution.</li>
+  <li>The existence of the limiting distribution.</li>
+</ul>
+
+<p>Here, I will go through some typical properties of states and MC, particularly about countably finite discrete-time MC.</p>
+
+<h2 id="absorption">Absorption</h2>
+
+<p>A state is referred to as an <strong>absorbing state</strong> and a chain of states is referred to as an <strong>absorbing chain</strong> if the system cannot leave once entered, or <strong>absorption</strong> occurs. An MC with an absorbing state and/or an absorbing chain is referred to as an <strong>absorbing MC</strong>. In an absorbing MC, a non-absorbing state is referred to as a <strong>transient state</strong>. Thus, two types of states exist, absorbing and transient in an absorbing MC.</p>
+
+<p>In an absorbing MC, \(\mathbf{P} \in \mathbb{R}^{n \times n}\) is usually expressed in canonical form. Let \(t\) be transient states and \(r\) be absorbing states, where \(n = t + r\).</p>
+
+\[\begin{equation}
+    \mathbf{P}
+    = \begin{bmatrix}
+        \mathbf{Q} &amp; \mathbf{R} \\
+        \mathbf{0} &amp; \mathbf{I} \\
+    \end{bmatrix}
+\end{equation}\]
+
+<ul>
+  <li>\(\mathbf{Q} \in \mathbb{R}^{t \times t}\) is \(p\) between transient states.</li>
+  <li>\(\mathbf{R} \in \mathbb{R}^{t \times r}\) is \(p\) from transient states to absorbing states.</li>
+  <li>\(\mathbf{I} \in \mathbb{R}^{r \times r}\) is \(p\) between absorbing states.</li>
+  <li>\(\mathbf{0} \in \mathbb{R}^{r \times t}\) is \(p\) from absorbing states to transient states, which is \(0\)-matrix.</li>
+</ul>
+
+<p>A <strong>fundamental matrix</strong>, \(\mathbf{N} \in \mathbb{R}^{t \times t}\), is the expected number of the visitations between every transient state before absorption, \(\mathbf{N} = \sum_{k=0}^{\infty} \mathbf{Q}^{k} = ( \mathbf{I} - \mathbf{Q} )^{-1}\).</p>
+<ul>
+  <li>Each \(( i , j )\) element represents the expected number of the visitations from \(s_{i}\) to \(s_{j}\) before absorption.</li>
+  <li>\(\mathbf{Q}^{k}\) is the proability of the system travelling between transient states at \(k\) step.</li>
+  <li>\(\mathbf{Q}^{\infty}\) approaches zero over time, \(\lim_{ k \rightarrow \infty } \mathbf{Q}^{k} = \mathbf{0} \in \mathbb{R}^{t \times t}\).</li>
+  <li>Under the Taylor series, \(\frac{1}{1-x} = \sum_{k=0}^{\infty} x^{k}\), and thus, \(\frac{1}{\mathbf{I} - \mathbf{Q}} = ( \mathbf{I} - \mathbf{Q} )^{-1} = \sum_{k=0}^{\infty} \mathbf{Q}^{k} = \mathbf{N}\).</li>
+</ul>
+
+<p>An <strong>irreduciblility</strong> is another commonly seen term in an absorbing MC. It is often confused with absorption since it can be a synonym or antonym based on the context. A set of states that the system cannot leave once entered is referred to as a <strong>closed irreducible set</strong>. An MC with a closed irreducible set is referred to as a <strong>reducible MC</strong>.</p>
+
+<p>Thus, <em>a closed irreducible set</em> is <em>a synonym for an absorbing state and absorbing chain</em>, but <em>an absorbing MC is antonym for an irreducible MC</em>. More formally:</p>
+<ul>
+  <li>An MC is an absorbing MC if there exist one or more closed irreducible sets, in which the system can reach from any state in a finite number of steps.</li>
+  <li>An MC is an irreducible MC if the system can reach any state from any other state in a finite number of time step.</li>
+</ul>
+
+<p>If an absorbing MC is <em>reduced</em> into multiple disjoint subsets based on reduciblility, that are an absorbing state, an absorbing chain and a chain of transient states, <em>states in each subset has the property that all states can communicate with each other</em>, i.e. absorbing or transient.</p>
+
+<h2 id="recurrence">Recurrence</h2>
+
+<p>A state is referred to as a <strong>recurrent state</strong> if the system is guaranteed to return to the starting state within a finite step. Note that the term <em>recurrent</em> is not often used to refer to an MC. More formally, a state is a recurrent state if:</p>
+
+\[\begin{equation}
+    \sum_{t = 1}^{\infty} \Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} ) = 1
+\end{equation}\]
+
+<ul>
+  <li>\(\Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} )\): For a given starting state, \(s_{i}\), the probability of the system returning to \(s_{i}\) at \(t\) step.</li>
+  <li>\(\sum_{t = 1}^{\infty} \Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} ) = 1\): The sum of the probabilities that the system will return to \(s_{i}\) is \(1\) in finite step. This means that the system guarantees that it will re-visit the starting state.</li>
+  <li>The notation omits \(S_{1} \neq s_{i} , \cdots , S_{t-1} \neq s_{i}\), so what it really signifies is \(\Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} , S_{1} \neq s_{i} , \cdots , S_{t-1} \neq s_{i} )\). This means that, for a given \(S_{0} = s_{i}\), the probability of the system returning to \(s_{i}\) at \(t\) step without visiting \(s_{i}\) in between.</li>
+</ul>
+
+<p>This definition is equivalent to all the following statements:</p>
+<ul>
+  <li>\(\sum_{t=1}^{\infty} \mathbb{1} ( S_{t} = s_{i} \vert S_{0} = s_{i} ) = \infty\): For a given \(S_{0} = s_{i}\), the summation of the booleans that the system will return to \(s_{i}\) is infinite.</li>
+  <li>\(\mathbb{1} ( S_{t} = s_{i} \text{ for infinitely many } t \vert S_{0} = s ) = 1\): For a given \(S_{0} = s_{i}\), the boolean that the system will return to \(s_{i}\) for infinitely many \(t\) is 1.</li>
+</ul>
+
+<p>If the system is not guaranteed to return, the state is referred to as a <strong>transient state</strong>, which is equivalent to the transient in an absorbing MC. More formally:</p>
+
+\[\begin{equation}
+    \sum_{t=1}^{\infty} \Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} ) &lt; 1
+    \\
+    \sum_{t=1}^{\infty} \mathbb{1} ( S_{t} = s_{i} \vert S_{0} = s_{i} ) &lt; \infty
+    \\
+    \mathbb{1} ( S_{t} = s_{i} \text{ for infinitely many } t \vert S_{0} = s_{i} ) = 0
+\end{equation}\]
+
+<p>An absorbing MC is the common MC that contains both recurrent and transient states.</p>
+<ul>
+  <li>An absorbing state is the recurrent state. If \(s_{i}\) is absorbing, \(\Pr ( S_{1} = s_{i} \vert S_{0} = s_{i} ) = 1\) and \(\Pr ( S_{n} = s_{i} \vert S_{0} = s_{i} ) = 0\) for \(n &gt; 1\).</li>
+  <li>All the states in an absorbing chain is the recurrent states. If \(s_{i}\) is within the absorbing chain, \(\sum_{t = 1}^{\infty} \Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} ) = 1\) within the absorbing chain.</li>
+  <li>A non-absorbing state is the transient state. If \(s_{i}\) is not absorbing, the system will fall into an absorbing state or chain within a finite step, \(\sum_{t=1}^{\infty} \Pr ( S_{t} = s_{i} \vert S_{0} = s_{i} ) &lt; 1\).</li>
+</ul>
+
+<p>A recurrence is to claim that the system will return to the starting state. However, there is a further division, <em>positive</em> or <em>null</em>. Both of them guarantee that the system will return to the starting state, but what matters is when. More formally, let a <strong>hitting time</strong> to be \(\tau_{s} := \inf \{ t \geq 0 : s_{i} \in \mathcal{S} \}\), which is the infimum of the number of steps that the system returns to the starting state, \(s_{i}\).</p>
+
+<ul>
+  <li><strong>Positive Recurrent</strong>: \(\tau_{s}\) is finite and finite expectation, or \(\tau_{s} &lt; \infty\) and \(\mathbb{E} \left[ \tau_{s} \right] &lt; \infty\), and thus, guaranteed to return in finite step.</li>
+  <li><strong>Null Recurrent</strong>: \(\tau_{s}\) is finite, but infinite expectation, or \(\tau_{s} &lt; \infty\) and \(\mathbb{E} \left[ \tau_{s} \right] = \infty\), and thus, guaranteed to return in infinite step.</li>
+  <li><strong>Transient</strong>: \(\tau_{s}\) is infinite and infinite expectation, or \(\tau_{s} = \infty\) and \(\mathbb{E} \left[ \tau_{s} \right] = \infty\), and thus, not guaranteed to return.</li>
+</ul>
+
+<p>Due to this, positive recurrent is often described as it will return in a finite step while null recurrent as it will almost certainly return in a finite step.</p>
+
+<p>A null recurrent state can only be present in a countably infinite MC, so in a countably finite MC, if an MC is said to be recurrent, it is always positive recurrent.</p>
+<ul>
+  <li>If an MC is countably finite:
+    <ul>
+      <li>There must be at least one recurrent state.
+        <ul>
+          <li>If reducible, an absorbing state or chain is recurrent and others are transient.</li>
+          <li>If irreducible, every state is positive recurrent.</li>
+        </ul>
+      </li>
+      <li>There can be no transient state, but not every state can be transient.</li>
+    </ul>
+  </li>
+  <li>If an MC is countably infinite:
+    <ul>
+      <li>Every state can be either positive recurrent, null recurrent or transient.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="periodicity">Periodicity</h2>
+<p>A state is referred to as a <strong>periodic state</strong> if the system returns to a particular state \(s_{i}\) at some rates \(\{ n , 2n , 3n , \cdots \}\), where \(n &gt; 1\). For instance, for a given \(S_{0} = s_{i}\), if the system returns to \(s_{i}\) at \(t = \{ 4 , 16 , 24 , 28 , \cdots \}\), then the state is periodic with \(n = 4\). If one state is periodic, then all the other states are periodic with the same period \(n\). An MC with periodic states is referred to as a <strong>periodic MC</strong>.</p>
+
+<p>If at least one state has \(p\) to itself, \(p ( s_{i} \vert s_{i} ) &gt; 0\), the state is aperiodic, and thus, the MC is also aperiodic. In general, it is said that an aperiodic MC has \(n = 1\) or \(n\) does not exist.</p>
+
+<p>To compare with other properties:</p>
+<ul>
+  <li>If an MC is absorbing, it cannot be periodic since the system will get stuck at an absorbing state or chain in a finite step.</li>
+  <li>If an MC is transient or null recurrent, it cannot be periodic since the system may never return or return in an infinite step.</li>
+  <li>Thus, a periodic MC is always <em>irreducible</em> and <em>positive recurrent</em> while aperiodic can hold any property. However, irreducible and/or positive recurrent does not tell us any information about periodicity.</li>
+</ul>
+
+<h2 id="ergodicity">Ergodicity</h2>
+
+<p>The <strong>ergodicity</strong> is one of the typical assumptions in an MC for machine learning applications. It is derived from ergodic theory, a branch of mathematics that studies statistical properties of deterministic dynamical systems, but the use of ergodicity is fairly simple in machine learning. The regular MC we usually refer to in machine learning actually refers to an ergodic MC.</p>
+
+<p>An MC is referred to as an <strong>ergodic MC</strong> if the system can travel from any state to any other state in any period, a.k.a. aperiodic, irreducible and positive recurrent. If an MC is ergodic, there exists a limiting distribution.</p>
+
+\[\begin{equation}
+    \pi_{i}^{(\infty)}
+    = \lim_{n \rightarrow \infty} \Pr ( S_{n} = s_{i} \vert S_{0} = s ) &gt; 0
+    \quad
+    s \in \mathcal{S}
+\end{equation}\]
+
+<p>This means, given any starting state, there exists a unique non-zero equilibrium probability that the system lands on a particular state, regardless of where it starts, if it travels infinitely.</p>
+
+<p>A limiting distribution is often interchangeably used with a stationary distribution, but they are different.</p>
+
+<ol>
+  <li>A stationary distribution is an equilibrium probability distribution that does not change over time, which is the left eigenvector for \(\mathbf{P}\), \(\pi = \pi \mathbf{P}\), such that \(\pi_{i} \geq 0 , \sum_{i}^{n} \pi_{i} = 1\), where \(\mathcal{S} = \{ s_{0} , \cdots , s_{n} \}\).
+    <ul>
+      <li>For an MC to have \(\pi\), it must have at least one positive recurrent state, in other words, if an MC has countably finite states, it has \(\pi\).</li>
+      <li>There is no restriction on how many \(\pi\) to exist, and thus, there may be more than one \(\pi\).</li>
+      <li>For instance, a periodic MC has a single \(\pi\) while an absorbing MC has infinitely many \(\pi\).</li>
+      <li>One way to obtain \(\pi\) is by finding eigenvalues and eigenvectors of the transposed \(\mathbf{P}\).</li>
+    </ul>
+
+\[\begin{equation}
+     \pi = \pi \mathbf{P}
+     \quad \rightarrow \quad
+     \lambda \pi^{\intercal} = \mathbf{P}^{\intercal} \pi^{\intercal}
+     \quad
+     \text{where, } \lambda = 1 , \pi_{i} \geq 0 , \sum_{i}^{n} \pi_{i} = 1
+ \end{equation}\]
+
+    <ul>
+      <li>However, this method does not obtain every \(\pi\). For instance, in an absorbing MC, there are infinitely many \(\pi\) and this method only acquires a few instances.</li>
+      <li>
+        <p>Another way to view \(\pi\) is from \(\tau_{s}\).</p>
+
+\[\begin{equation}
+      \pi_{i} = \frac{1}{ \mathbb{E} \left[ \tau_{i} \right] }
+  \end{equation}\]
+
+        <ul>
+          <li>This also reflects why if \(\mathbb{E} \left[ \tau_{s} \right] = \infty\), i.e. null recurrent or transient, \(\pi\) approaches zero.</li>
+          <li>For an MC with null recurrent states only or transient states only, \(\tau_{s}\) for all the states is infinite, so \(\sum_{i}^{\infty} \pi_{i} = 1\) does not hold, and thus, there is no \(\pi\). Often determining if a \(\pi\) exists in the case of a recurrent MC is a method of proving if an MC is positive recurrent.</li>
+        </ul>
+      </li>
+      <li>So, if an MC is countably finite, at least one \(\pi\) exists, but if countably infinite, there may be no \(\pi\).</li>
+    </ul>
+  </li>
+  <li>A limiting distribution is a unique non-zero equilibrium distribution that is not dependent on an initial distribution, \(\pi_{i}^{(\infty)} = \lim_{n \rightarrow \infty} \Pr ( S_{n} = s_{i} \vert S_{0} = s ) &gt; 0\).
+    <ul>
+      <li>Since \(\pi^{(\infty)}\) is a unique distribution, the multiplication of \(\mathbf{P}\) to any \(\pi^{(0)}\) converges to \(\pi^{(\infty)}\).</li>
+    </ul>
+
+\[\begin{align}
+     \mathbf{P}^{\ast}
+     = \lim_{k \rightarrow \infty} \mathbf{P}^{k}
+     &amp; = \lim_{k \rightarrow \infty}
+     \begin{bmatrix}
+         p ( s_{1} \vert s_{1} ) &amp; p ( s_{2} \vert s_{1} ) &amp; \cdots &amp; p ( s_{n} \vert s_{1} ) \\
+         p ( s_{1} \vert s_{2} ) &amp; p ( s_{2} \vert s_{2} ) &amp; \cdots &amp; p ( s_{n} \vert s_{2} ) \\
+         \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+         p ( s_{1} \vert s_{n} ) &amp; p ( s_{2} \vert s_{n} ) &amp; \cdots &amp; p ( s_{n} \vert s_{n} ) \\
+     \end{bmatrix}^{k}
+     \\
+     &amp; = \begin{bmatrix}
+         \pi_{1}^{(\infty)} &amp; \pi_{2}^{(\infty)} &amp; \cdots &amp; \pi_{n}^{(\infty)} \\
+         \pi_{1}^{(\infty)} &amp; \pi_{2}^{(\infty)} &amp; \cdots &amp; \pi_{n}^{(\infty)} \\
+         \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+         \pi_{1}^{(\infty)} &amp; \pi_{2}^{(\infty)} &amp; \cdots &amp; \pi_{n}^{(\infty)} \\
+     \end{bmatrix}
+     = \begin{bmatrix}
+         \pi^{(\infty)} \\
+         \pi^{(\infty)} \\
+         \vdots \\
+         \pi^{(\infty)} \\
+     \end{bmatrix}
+     \quad
+     \text{where, }
+     \pi^{(\infty)}
+     = \begin{bmatrix}
+         \pi_{1}^{(\infty)} \\ \pi_{2}^{(\infty)} \\ \vdots \\ \pi_{n}^{(\infty)} \\
+     \end{bmatrix}^{\intercal}
+ \end{align}\]
+
+    <ul>
+      <li>A periodic MC has no \(\pi^{(\infty)}\) since it oscillates periodically.</li>
+      <li>An absorbing MC has no \(\pi^{(\infty)}\) since it converges to a distribution dependent to \(\pi^{(0)}\) and the converged distribution contains zero value at transient states.</li>
+      <li>If \(\pi^{(\infty)}\) exists, \(\pi^{(\infty)} = \pi\), and thus, \(\pi\) is non-zero and unique.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Therefore:</p>
+<ul>
+  <li>The existence of \(\pi^{(\infty)}\) is necessary and sufficient for the ergodicity of an MC.</li>
+  <li>The ergodicity of an MC is necessary and sufficient for the existence of \(\pi^{(\infty)}\).</li>
+  <li>The existence of \(\pi^{(\infty)}\) is only sufficient for a non-zero unique \(\pi\), not necessary.</li>
+  <li>A non-zero unique \(\pi\) is neither necessary nor sufficient for the existence of \(\pi^{(\infty)}\).</li>
+  <li>A non-zero unique \(\pi\) is neither necessary nor sufficient for the ergodicity of an MC.</li>
+</ul>
+
+<h1 id="markov-chain-example">Markov Chain Example</h1>
+
+<p>To give better insights, I will go through some examples.</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 300px"> Absorbing Markov chain </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px"> Periodic Markov chain </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px"> Ergodic Markov chain </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            <img src="/assets/mathematics/markov_model_1_markov_chain/2_mc_absorbing.png" width="300px" />
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            <img src="/assets/mathematics/markov_model_1_markov_chain/2_mc_periodic.png" width="300px" />
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            <img src="/assets/mathematics/markov_model_1_markov_chain/2_mc_ergodic.png" width="300px" />
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            $ 1 $ and $ 2 $ are transient while $ 3 $ and $ 4 $ are absorbing.
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            All are periodic with $ n = 2 $, $ \{ 2, 4, 6, \cdots \} $.
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            Other than $ p ( 3 \vert 4 ) $ and $ p ( 2 \vert 3 ) $, all the transition probabilities are non-zero.
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            $$
+            \begin{equation}
+                \mathbf{P}
+                = \begin{bmatrix}
+                    0.2 &amp; 0.3 &amp; 0.1 &amp; 0.4 \\
+                    0.2 &amp; 0.3 &amp; 0.4 &amp; 0.1 \\
+                    0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+                    0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+                \end{bmatrix}
+            \end{equation}
+            $$
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            $$
+            \begin{equation}
+                \mathbf{P}
+                = \begin{bmatrix}
+                    0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+                    0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+                    1.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 \\
+                    0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+                \end{bmatrix}
+            \end{equation}
+            $$
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            $$
+            \begin{equation}
+                \mathbf{P}
+                = \begin{bmatrix}
+                    0.2 &amp; 0.3 &amp; 0.1 &amp; 0.4 \\
+                    0.2 &amp; 0.3 &amp; 0.4 &amp; 0.1 \\
+                    0.5 &amp; 0.0 &amp; 0.2 &amp; 0.3 \\
+                    0.1 &amp; 0.7 &amp; 0.0 &amp; 0.2 \\
+                \end{bmatrix}
+            \end{equation}
+            $$
+        </td>
+    </tr>
+    <figcaption class="figure-caption text-center">
+        Markov chain examples. The original code for visualization and calculation can be found in
+        <a href="/assets/mathematics/markov_model_1_markov_chain/figure.ipynb">
+            here
+        </a>
+    </figcaption>
+</table>
+
+<h2 id="absorbing-markov-chain">Absorbing Markov Chain</h2>
+
+<p>An absorbing MC has infinitely many stationary distributions, but no limiting distribution. The eigenvalues and eigenvectors for \(\mathbf{P}^{\intercal}\) are:</p>
+
+\[\begin{equation}
+    \lambda \pi^{\intercal} = \mathbf{P}^{\intercal} \pi^{\intercal}
+    \quad \rightarrow \quad
+    \pi
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \text{or} \quad
+    \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>However, they are not all. Consider the transition matrix.</p>
+
+\[\begin{equation}
+    \mathbf{P}
+    = \begin{bmatrix}
+        0.2 &amp; 0.3 &amp; 0.1 &amp; 0.4 \\
+        0.2 &amp; 0.3 &amp; 0.4 &amp; 0.1 \\
+        0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+        0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad
+    \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.38 &amp; 0.62 \\
+        0.0 &amp; 0.0 &amp; 0.68 &amp; 0.32 \\
+        0.0 &amp; 0.0 &amp; 1.0  &amp; 0.0  \\
+        0.0 &amp; 0.0 &amp; 1.0  &amp; 0.0  \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>Under different initial distributions:</p>
+
+\[\begin{align}
+    \pi^{(0)}
+    = \begin{bmatrix}
+        1.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.38 &amp; 0.62 \\
+    \end{bmatrix}
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.2 &amp; 0.8 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.62 &amp; 0.38 \\
+    \end{bmatrix}
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.0 &amp; 1.0 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.68 &amp; 0.32 \\
+    \end{bmatrix}
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.3 &amp; 0.3 &amp; 0.4 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 &amp; 0.718 &amp; 0.282 \\
+    \end{bmatrix}
+\end{align}\]
+
+<ul>
+  <li>A stationary distribution depends on the initial distribution, so there is no unique equilibrium, a.k.a. no limiting distribution.</li>
+  <li>Transient states always have zero stationary distribution, since the system falls into absorbing states.</li>
+  <li>A fundamental matrix and an absorption time are:</li>
+</ul>
+
+\[\begin{equation}
+    \mathbf{P}
+    = \begin{bmatrix}
+        0.2 &amp; 0.3 &amp; 0.1 &amp; 0.4 \\
+        0.2 &amp; 0.3 &amp; 0.4 &amp; 0.1 \\
+        0.0 &amp; 0.0 &amp; 1.0 &amp; 0.0 \\
+        0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        \mathbf{Q} &amp; \mathbf{R} \\
+        \mathbf{0} &amp; \mathbf{I} \\
+    \end{bmatrix}
+    \\
+    \mathbf{Q}
+    = \begin{bmatrix}
+        0.2 &amp; 0.3 \\
+        0.2 &amp; 0.3 \\
+    \end{bmatrix}
+    \quad
+    \mathbf{Q}^{2}
+    = \begin{bmatrix}
+        0.1 &amp; 0.15 \\
+        0.1 &amp; 0.15 \\
+    \end{bmatrix}
+    \quad
+    \mathbf{Q}^{\infty}
+    = \begin{bmatrix}
+        0.0 &amp; 0.0 \\
+        0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \\
+    \mathbf{N} = \sum_{k=0}^{\infty} \mathbf{Q}^{k} = ( \mathbf{I} - \mathbf{Q} )^{-1}
+    = \begin{bmatrix}
+        1.4 &amp; 0.6 \\
+        0.4 &amp; 1.6 \\
+    \end{bmatrix}
+\end{equation}\]
+
+<ul>
+  <li>\(( i , j )\) element in \(\mathbf{Q}^{2}\) is the probability of visiting \(s_{j}\) from \(s_{i}\) at \(t = 2\), \(p ( S_{2} = s_{j} \vert S_{0} = s_{i}\).</li>
+  <li>Every element in \(\mathbf{Q}^{\infty}\) reaches zero since the system falls into absorbing states.</li>
+  <li>\(( i , j )\) element in \(\mathbf{N}\) is the number of times that the system will visit \(s_{j}\) from \(s_{i}\).</li>
+</ul>
+
+<h2 id="periodic-markov-chain">Periodic Markov Chain</h2>
+
+<p>A periodic MC has a single stationary distribution, but no limiting distribution since \(\lim_{k \rightarrow \infty} \mathbf{P}^{k}\) never converges.</p>
+
+\[\begin{equation}
+    \lambda \pi^{\intercal} = \mathbf{P}^{\intercal} \pi^{\intercal}
+    \quad \rightarrow \quad
+    \pi
+    = \begin{bmatrix}
+        0.25 &amp; 0.25 &amp; 0.25 &amp; 0.25 \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>For \(\mathbf{P}^{k}\), as \(k \rightarrow \infty\):</p>
+
+\[\begin{equation}
+    \mathbf{P}
+    = \begin{bmatrix}
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.0 &amp; 0.0 &amp; 0.0 &amp; 1.0 \\
+        1.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad
+    \mathbf{P}^{2}
+    = \begin{bmatrix}
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+    \end{bmatrix}
+    \\
+    \mathbf{P}^{3}
+    = \begin{bmatrix}
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad
+    \mathbf{P}^{4}
+    = \begin{bmatrix}
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>\(\mathbf{P}^{k}\) oscillates between \(\mathbf{P}^{2}\) and \(\mathbf{P}^{3}\), and thus,</p>
+
+\[\begin{equation}
+    \pi^{(0)}
+    = \begin{bmatrix}
+        1.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad
+    \pi^{(0)} \mathbf{P}
+    = \begin{bmatrix}
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+    \end{bmatrix}
+    \\
+    \pi^{(0)} \mathbf{P}^{2}
+    = \begin{bmatrix}
+        0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \\
+    \end{bmatrix}
+    \quad
+    \pi^{(0)} \mathbf{P}^{3}
+    = \begin{bmatrix}
+        0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \\
+    \end{bmatrix}
+\end{equation}\]
+
+<p>So, it repeats between \(\begin{bmatrix} 0.5 &amp; 0.0 &amp; 0.0 &amp; 0.5 \end{bmatrix}\) and \(\begin{bmatrix} 0.0 &amp; 0.5 &amp; 0.5 &amp; 0.0 \end{bmatrix}\).</p>
+
+<h2 id="ergodic-markov-chain">Ergodic Markov Chain</h2>
+
+<p>An ergodic MC has a limiting distribution, and so, a stationary distribution is unique.</p>
+
+\[\begin{align}
+    \lambda \pi^{\intercal} = \mathbf{P}^{\intercal} \pi^{\intercal}
+    \quad \rightarrow \quad &amp;
+    \pi
+    = \begin{bmatrix}
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+    \end{bmatrix}
+    \\
+    \mathbf{P}
+    = \begin{bmatrix}
+        0.2 &amp; 0.3 &amp; 0.1 &amp; 0.4 \\
+        0.2 &amp; 0.3 &amp; 0.4 &amp; 0.1 \\
+        0.5 &amp; 0.0 &amp; 0.2 &amp; 0.3 \\
+        0.1 &amp; 0.7 &amp; 0.0 &amp; 0.2 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+    \end{bmatrix}
+    = \begin{bmatrix}
+        \pi \\
+        \pi \\
+        \pi \\
+        \pi \\
+    \end{bmatrix}
+\end{align}\]
+
+<p>Under different initial distributions:</p>
+
+\[\begin{align}
+    \pi^{(0)}
+    = \begin{bmatrix}
+        1.0 &amp; 0.0 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+    \end{bmatrix}
+    = \pi
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.2 &amp; 0.8 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+    \end{bmatrix}
+    = \pi
+    \\
+    \pi^{(0)}
+    = \begin{bmatrix}
+        0.0 &amp; 1.0 &amp; 0.0 &amp; 0.0 \\
+    \end{bmatrix}
+    \quad \rightarrow \quad &amp;
+    \pi^{(\infty)}
+    = \pi^{(0)} \mathbf{P}^{\infty}
+    = \begin{bmatrix}
+        0.236 &amp; 0.334 &amp; 0.197 &amp; 0.233 \\
+    \end{bmatrix}
+    = \pi
+\end{align}\]
+
+<p>So, the stationary distribution converges the same regardless of the initial distribution, and hence, it is the limiting distribution.</p>
+
+<h1 id="hidden-markov-model">Hidden Markov Model</h1>
+
+<p>A <strong>hidden Markov model (HMM)</strong> is an MC with partial observability. The idea behind an HMM is that the state is hidden from the system, or a <strong>hidden state</strong> or unobserved event or latent variable. So, instead of observing a state, the system needs to infer the state from an additional variable, referred to as an <strong>observation</strong>, \(\mathcal{O}\). There also exists a probability of emitting different observations for a given state, referred to as an <strong>emission probability</strong>, \(\mathcal{P}_{o}\).</p>
+
+<p>An emission probability also holds the Markov property. There exists an observation, \(o \in \mathcal{O}\), and an emission probability, \(p_{o} \in \mathcal{P}_{o}\), such that,</p>
+
+\[\begin{equation}
+    \Pr ( O_{t} = o_{t} \vert S_{1:t} = s_{1:t} , O_{1:t-1} = o_{1:t-1} )
+    \equiv p_{o} ( O_{t} = o_{t} \vert S_{t} = s_{t} )
+    = p_{o} ( o_{t} \vert s_{t} )
+\end{equation}\]
+
+<p>So, in an HMM, \(p\) and \(p_{o}\) are only dependent on the previous state and the current state, respectively.</p>
+
+<p>Consider the following HMM.</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 650px" colspan="2">
+            Hidden Markov model from
+            <a href="https://commons.wikimedia.org/wiki/File:HiddenMarkovModel.svg">
+                Wikimedia Commons
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 300px">
+            <img src="/assets/mathematics/markov_model_1_markov_chain/3_hmm.png" />
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 350px">
+            $$
+            \begin{equation}
+                \mathbf{P}
+                = \begin{bmatrix}
+                    p ( X1 \vert X1 ) &amp; p ( X2 \vert X1 ) &amp; p ( X3 \vert X1 ) \\
+                    p ( X1 \vert X2 ) &amp; p ( X2 \vert X2 ) &amp; p ( X3 \vert X2 ) \\
+                    p ( X1 \vert X3 ) &amp; p ( X2 \vert X3 ) &amp; p ( X3 \vert X3 ) \\
+                \end{bmatrix}
+                \\
+                \mathbf{P}_{o}
+                = \begin{bmatrix}
+                    p ( y1 \vert X1 ) &amp; p ( y2 \vert X1 ) &amp; p ( y3 \vert X1 ) &amp; p ( y4 \vert X1 ) \\
+                    p ( y1 \vert X2 ) &amp; p ( y2 \vert X2 ) &amp; p ( y3 \vert X2 ) &amp; p ( y4 \vert X2 ) \\
+                    p ( y1 \vert X3 ) &amp; p ( y2 \vert X3 ) &amp; p ( y3 \vert X3 ) &amp; p ( y4 \vert X3 ) \\
+                \end{bmatrix}
+            \end{equation}
+            $$
+        </td>
+    </tr>
+</table>
+
+<p>The joint probability of all the states and observations can be expressed as:</p>
+
+\[\begin{align}
+    \Pr ( S_{1:T} = s_{1:T} , O_{1:T} = o_{1:T} )
+    = &amp; \Pr ( s_{1} , \cdots , s_{T} , o_{1} , \cdots , o_{T})
+    \\
+    = &amp; p_{0} ( s_{1} ) p_{o} ( o_{T} \vert s_{T} ) \Pi_{t=1}^{T-1} p ( s_{t+1} \vert s_{t} ) p_{o} ( o_{t} \vert s_{t} )
+\end{align}\]
+
+<p>Where:</p>
+<ul>
+  <li>\(p_{0} ( s_{1} )\) is the initial distribution for \(s_{1}\).</li>
+  <li>\(p ( s_{t+1} \vert s_{t} )\) is the transition probability from \(s_{t}\) to \(s_{t+1}\).</li>
+  <li>\(p_{o} ( o_{t} \vert s_{t} )\) is the emission probability of \(o_{t}\) at \(s_{t}\).</li>
+</ul>
+
+<p>In an HMM, the property is not really what we concern about, instead, the inference of hidden states is what we concern about.</p>
+
+<h2 id="inference">Inference</h2>
+
+<p>There are two core inferences in an HMM.</p>
+
+<ul>
+  <li><strong>Forward inference</strong>: The joint probability of \(s_{t}\) and \(o_{1:t}\).</li>
+</ul>
+
+\[\require{color}
+\begin{align}
+    \alpha_{1} ( s_{1} )
+    &amp; = \Pr ( S_{1} = s_{1} , O_{1} = o_{1} )
+    \\
+    &amp; = \textcolor{red}{ p_{o} ( o_{1} \vert s_{1} ) p_{0} ( s_{1} ) }
+    \\
+    \alpha_{2} ( s_{2} )
+    &amp; = \Pr ( S_{2} = s_{2} , O_{1} = o_{1} , O_{2} = o_{2} )
+    \\
+    &amp; = \textcolor{blue}{ \sum_{s_{1} \in \mathcal{S}}
+    \textcolor{red}{ p_{o} ( o_{1} \vert s_{1} ) p_{0} ( s_{1} ) }
+    p_{o} ( o_{2} \vert s_{2} ) p ( s_{2} \vert s_{1} ) }
+    = \sum_{s_{1} \in \mathcal{S}} \alpha_{1} ( s_{1} ) p_{o} ( o_{2} \vert s_{2} ) p ( s_{2} \vert s_{1} )
+    \\
+    \alpha_{3} ( s_{3} )
+    &amp; = \Pr ( S_{3} = s_{3} , O_{1} = o_{1} , O_{2} = o_{2} , O_{3} = o_{3} )
+    \\
+    &amp; = \sum_{s_{2} \in \mathcal{S}}
+    \textcolor{blue}{ \sum_{s_{1} \in \mathcal{S}}
+    \textcolor{red}{ p_{o} ( o_{1} \vert s_{1} ) p_{0} ( s_{1} ) }
+    p_{o} ( o_{2} \vert s_{2} ) p ( s_{2} \vert s_{1} ) }
+    p_{o} ( o_{3} \vert s_{3} ) p ( s_{3} \vert s_{2} )
+    = \sum_{s_{2} \in \mathcal{S}} \alpha_{2} ( s_{2} ) p_{o} ( o_{3} \vert s_{3} ) p ( s_{3} \vert s_{2} )
+    \\
+    &amp; \; \vdots
+    \\
+    \alpha_{t} ( s_{t} )
+    &amp; = \Pr ( S_{t} = s_{t} , O_{1:t} = o_{1:t} )
+    = \sum_{s_{t-1} \in \mathcal{S}} \alpha_{t-1} ( s_{t-1} )
+    p_{o} ( o_{t} \vert s_{t} ) p ( s_{t} \vert s_{t-1} )
+\end{align}\]
+
+<ul>
+  <li><strong>Backward inference</strong>: The conditional probability of \(o_{t+1:T}\) for a given \(s_{t}\).</li>
+</ul>
+
+\[\require{color}
+\begin{align}
+    \beta_{T} ( s_{T} )
+    &amp; = \Pr ( \cdot \vert S_{T} = s_{T} )
+    \\
+    &amp; = \textcolor{red}{ p_{o} ( \cdot \vert \cdot ) p ( \cdot \vert s_{T} ) } = 1
+    \\
+    \beta_{T-1} ( s_{T-1} )
+    &amp; = \Pr ( O_{T} = o_{T} \vert S_{T-1} = s_{T-1} )
+    \\
+    &amp; = \textcolor{blue}{ \sum_{s_{T} \in \mathcal{S}}
+    \textcolor{red}{ p_{o} ( \cdot \vert \cdot ) p ( \cdot \vert s_{T} ) }
+    p_{o} ( o_{T} \vert s_{T} ) p ( s_{T} \vert s_{T-1} ) }
+    = \sum_{s_{T} \in \mathcal{S}} \beta_{T} ( s_{T} ) p_{o} ( o_{T} \vert s_{T} ) p ( s_{T} \vert s_{T-1} )
+    \\
+    \beta_{T-2} ( s_{T-2} )
+    &amp; = \Pr ( O_{T-1} = o_{T-1} , O_{T} = o_{T} \vert S_{T-2} = s_{T-2} )
+    \\
+    &amp; = \sum_{s_{T-1} \in \mathcal{S}}
+    \textcolor{blue}{ \sum_{s_{T} \in \mathcal{S}}
+    \textcolor{red}{ p_{o} ( \cdot \vert \cdot ) p ( \cdot \vert s_{T} ) }
+    p_{o} ( o_{T} \vert s_{T} ) p ( s_{T} \vert s_{T-1} ) }
+    p_{o} ( o_{T-1} \vert s_{T-1} ) p ( s_{T-1} \vert s_{T-2} )
+    \\
+    &amp; = \sum_{s_{T-1} \in \mathcal{S}} \beta_{T-1} ( s_{T-1} ) p_{o} ( o_{T-1} \vert s_{T-1} ) p ( s_{T-1} \vert s_{T-2} )
+    \\
+    &amp; \; \vdots
+    \\
+    \beta_{t} ( s_{t} )
+    &amp; = \Pr ( O_{t+1:T} = o_{t+1:T} \vert S_{t} = s_{t} )
+    = \sum_{s_{t+1} \in \mathcal{S}}
+    \beta_{t+1} ( s_{t+1} ) p_{o} ( o_{t+1} \vert s_{t+1} ) p ( s_{t+1} \vert s_{t} )
+\end{align}\]
+
+<p>Together, we can derive two important inferences.</p>
+<ul>
+  <li>
+    <p>The probability of the system visiting \(s_{i}\) at \(t\) for a given \(o_{1:T}\).</p>
+
+\[\begin{align}
+      \gamma_{t} ( s_{i} )
+      &amp; = \Pr ( S_{t} = s_{i} \vert O_{1:T} = o_{1:T} )
+      \\
+      &amp; = \frac{\Pr ( S_{t} = s_{i} , O_{1:T} = o_{1:T} )}
+      {\Pr ( O_{1:T} = o_{1:T} )}
+      \\
+      &amp; = \frac{ \Pr ( S_{t} = s_{i} , O_{1:t} = o_{1:t} ) \Pr ( O_{t+1:T} = o_{t+1:T} \vert S_{t} = s_{i} ) }
+      { \sum_{i'} \Pr ( S_{t} = s_{i'} , O_{1:t} = o_{1:t} ) \Pr ( O_{t+1:T} = o_{t+1:T} \vert S_{t} = s_{i'} ) }
+      \\
+      &amp; = \frac{ \alpha_{t} ( s_{i} ) \beta_{t} ( s_{i} ) }
+      { \sum_{s_{j} \in \mathcal{S}} \alpha_{t} ( s_{j} ) \beta_{t} ( s_{j} ) }
+  \end{align}\]
+
+    <ul>
+      <li>\(\sum_{t=1}^{T-1} \gamma_{t} ( s_{i} )\) is the expected number of the visitations to \(s_{i}\).</li>
+    </ul>
+  </li>
+  <li>
+    <p>The probability of \(s_{i}\) at \(t\) and \(s_{j}\) at \(t+1\) for a given \(o_{1:T}\).</p>
+
+\[\begin{align}
+      \xi_{t} ( s_{i} , s_{j} )
+      &amp; = \Pr ( S_{t} = s_{i} , S_{t+1} = s_{j} \vert O_{1:T} = o_{1:T} )
+      \\
+      &amp; = \frac{\Pr ( S_{t} = s_{i} , S_{t+1} = s_{j} , O_{1:T} = o_{1:T} )}
+      {\Pr ( O_{1:T} = o_{1:T} )}
+      \\
+      &amp; = \frac{ p_{o} ( o_{t+1} \vert s_{j} ) p ( s_{j} \vert s_{i} ) \alpha_{t} ( s_{i} ) \beta_{t+1} ( s_{j} ) }
+      { \sum_{s_{l} \in \mathcal{S}} \sum_{s_{k} \in \mathcal{S}} p_{o} ( o_{t+1} \vert s_{l} ) p ( s_{l} \vert s_{k} ) \alpha_{t} ( s_{k} ) \beta_{t+1} ( s_{l} ) }
+  \end{align}\]
+
+    <ul>
+      <li>\(\sum_{t=1}^{T-1} \xi_{t} ( s_{i} , s_{j} )\) is the expected number of the visitations to \(s_{i}\) at \(t\) and \(s_{j}\) at \(t+1\).</li>
+      <li>\(\sum_{s_{j} \in \mathcal{S}} \xi_{t} ( s_{i} , s_{j} ) = \gamma_{t} ( s_{i} )\) since summing all the visitations to \(s_{j}\) at \(t+1\) in \(\xi_{t} ( s_{i} , s_{j} )\) only leaves the expected number of the visitations to \(s_{i}\) at \(t\).</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Using these four basic inferences, we can infer hidden states in an HMM. Note that literatures often use notations, \(\pi_{i} = p_{0} ( S_{1} = s_{i} )\), \(a_{ij} = p ( X_{t} = s_{j} \vert X_{t-1} = s_{i} )\), and \(b_{j} ( o_{i} ) = p_{o} ( O_{t} = o_{i} \vert S_{t} = s_{j} )\).</p>
+
+<h2 id="baum-welch-algorithm">Baum-Welch Algorithm</h2>
+
+<p>Most real-world problems do not provide environment dynamics, so \(p_{0}\), \(p\) and \(p_{o}\) are unknown. The <strong>Baum-Welch algorithm</strong>, a type of expectation maximization algorithm, allows us to obtain these environment dynamics.</p>
+
+<ol>
+  <li>
+    <p>Expectation step</p>
+
+\[\begin{align}
+     \gamma_{t} ( s_{i} )
+     = \frac{ \alpha_{t} ( s_{i} ) \beta_{t} ( s_{i} ) }
+     { \sum_{s_{j} \in \mathcal{S}} \alpha_{t} ( s_{j} ) \beta_{t} ( s_{j} ) }
+     \quad
+     \xi_{t} ( s_{i} , s_{j} )
+     = \frac{ p_{o} ( o_{t+1} \vert s_{j} ) p ( s_{j} \vert s_{i} ) \alpha_{t} ( s_{i} ) \beta_{t+1} ( s_{j} ) }
+     { \sum_{s_{l} \in \mathcal{S}} \sum_{s_{k} \in \mathcal{S}} p_{o} ( o_{t+1} \vert s_{l} ) p ( s_{l} \vert s_{k} ) \alpha_{t} ( s_{k} ) \beta_{t+1} ( s_{l} ) }
+ \end{align}\]
+
+    <ul>
+      <li>\(\gamma_{t} ( s_{i} )\) is the probability of \(s_{i}\) at \(t\) for a given \(o_{1:T}\).</li>
+      <li>\(\xi_{t} ( s_{i} , s_{j} )\) is the probability of \(s_{i}\) at \(t\) and \(s_{j}\) at \(t+1\) for a given \(o_{1:T}\).</li>
+    </ul>
+  </li>
+  <li>
+    <p>Maximization step</p>
+
+\[\begin{align}
+     p_{0} ( s_{i} ) = \gamma_{1} ( s_{i} )
+     \quad
+     p ( s_{j} \vert s_{i} ) = \frac{ \sum_{t=1}^{T-1} \xi_{t} ( s_{i} , s_{j} ) }
+     { \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }
+     \quad
+     p_{o} ( o_{i} \vert s_{i} ) = \frac{ \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) \mathbb{1} ( o_{t} = o_{i} ) }
+     { \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }
+ \end{align}\]
+
+    <ul>
+      <li>\(\gamma_{1} ( s_{i} )\) is the probability of \(s_{i}\) at \(t = 1\) for a given \(o_{1:T}\).</li>
+      <li>\(\frac{ \sum_{t=1}^{T-1} \xi_{t} ( s_{i} , s_{j} ) }{ \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }\) is the probability of \(s_{j}\) at \(t+1\) for a given \(s_{i}\) at \(t\) and \(o_{1:T}\).</li>
+      <li>\(\frac{ \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) \mathbb{1} ( o_{t} = o_{i} ) }{ \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }\) is the probability of \(o_{i}\) at \(t\) for a given \(s_{i}\) at \(t\) and \(o_{1:T}\).</li>
+      <li>\(p_{0} ( s_{i} )\), \(p ( s_{j} \vert s_{i} )\) and \(p_{o} ( o_{i} \vert s_{i} )\) are normalized at each maximization step.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Since the probability is a fraction, multiplying them continuously will approach zero due to the precision. To avoid this underflow, often normalization is applied to \(\alpha\) and \(\beta\).</p>
+
+\[\begin{align}
+    \hat{\alpha} ( s_{t} )
+    = \frac{ \alpha ( s_{t} ) }{ \sum_{s_{t’}} \alpha ( s_{t’} ) }
+    \quad
+    \hat{\beta} ( s_{t} )
+    = \frac{ \beta ( s_{t} ) }{ \sum_{s_{t’}} \beta ( s_{t’} ) }
+\end{align}\]
+
+<h1 id="summary">Summary</h1>
+
+<p>In this post, Markov models with an autonomous system in a discrete-time setting are covered.</p>
+
+<p>A transition probability in an MC follows the Markov property.</p>
+
+\[\begin{align}
+    \Pr ( S_{t+1} = s_{t+1} \vert S_{0:t} = s_{0:t} )
+    \equiv p ( S_{t+1} = s_{t+1} \vert S_{t} = s_{t} )
+    = p ( s_{t+1} \vert s_{t} )
+\end{align}\]
+
+<p>An MC is all about the properties, which can be determined by:</p>
+<ul>
+  <li>Is an MC countably finite or infinite?
+    <ul>
+      <li>If countably infinite MC, it can be any of transient, null recurrent or positive recurrent, more theories behind.
+        <ul>
+          <li>A limiting distribution and stationary distribution may or may not exist.</li>
+        </ul>
+      </li>
+      <li>If countably finite MC, it has one or more stationary distributions. Next question.</li>
+    </ul>
+  </li>
+  <li>Is an MC absorbing or irreducible?
+    <ul>
+      <li>If absorbing MC, it is composed of positive recurrent absorbing states/chains and transient states.
+        <ul>
+          <li>A limiting distribution does not exist, but more than one stationary distribution exist.</li>
+          <li>Fundamental matrix, \(\mathbf{N}\):</li>
+        </ul>
+
+\[\begin{equation}
+      \mathbf{N}
+      = \sum_{k=0}^{\infty} \mathbf{Q}^{k}
+      = ( \mathbf{I} - \mathbf{Q} )^{-1}
+      \quad
+      \text{where, }
+      \mathbf{P}
+      = \begin{bmatrix}
+          \mathbf{Q} &amp; \mathbf{R} \\
+          \mathbf{0} &amp; \mathbf{I} \\
+      \end{bmatrix}
+      ,
+      \lim_{ k \rightarrow \infty } \mathbf{Q}^{k} = \mathbf{0}
+  \end{equation}\]
+      </li>
+      <li>If irreducible MC, it is composed of only positive recurrent states with no transient state. Next question.</li>
+    </ul>
+  </li>
+  <li>Is an MC periodic or aperiodic?
+    <ul>
+      <li>If periodic MC, it returns to a particular state at some rates \(\{ n , 2n , 3n , \cdots \}\), where \(n &gt; 1\).
+        <ul>
+          <li>A limiting distribution does not exist, but a single stationary distribution exists.</li>
+        </ul>
+      </li>
+      <li>If aperiodic MC, an MC is said to be an ergodic MC.
+        <ul>
+          <li>A limiting distribution exists and is equivalent to a stationary distribution.</li>
+        </ul>
+
+\[\begin{equation}
+      \pi_{i}^{(\infty)} = \lim_{n \rightarrow \infty} \Pr ( S_{n} = s_{i} \vert S_{0} = s ) &gt; 0
+      \\
+      \pi = \pi \mathbf{P}
+      \equiv
+      \pi^{(\infty)} = \pi^{(\infty)} \mathbf{P}
+      \equiv
+      \pi^{(0)} \mathbf{P}^{\infty}
+  \end{equation}\]
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>An emission probability in an HMM follows the Markov property.</p>
+
+\[\begin{align}
+    \Pr ( O_{t} = o_{t} \vert S_{1:t} = s_{1:t} , O_{1:t-1} = o_{1:t-1} )
+    \equiv p_{o} ( O_{t} = o_{t} \vert S_{t} = s_{t} )
+    = p_{o} ( o_{t} \vert s_{t} )
+\end{align}\]
+
+<p>An HMM is all about the inferences.</p>
+
+\[\begin{align}
+    \alpha_{1} ( s_{1} )
+    &amp; = \Pr ( S_{1} = s_{1} , O_{1} = o_{1} )
+    = p_{o} ( o_{1} \vert s_{1} ) p_{0} ( s_{1} )
+    \\
+    \alpha_{t} ( s_{t} )
+    &amp; = \Pr ( S_{t} = s_{t} , O_{1:t} = o_{1:t} )
+    = \sum_{s_{t-1} \in \mathcal{S}} \alpha_{t-1} ( s_{t-1} )
+    p_{o} ( o_{t} \vert s_{t} ) p ( s_{t} \vert s_{t-1} )
+    \\
+    \beta_{t} ( s_{t} )
+    &amp; = \Pr ( O_{t+1:T} = o_{t+1:T} \vert S_{t} = s_{t} )
+    = \sum_{s_{t+1} \in \mathcal{S}}
+    \beta_{t+1} ( s_{t+1} ) p_{o} ( o_{t+1} \vert s_{t+1} ) p ( s_{t+1} \vert s_{t} )
+    \\
+    \beta_{T} ( s_{T} )
+    &amp; = \Pr ( \cdot \vert S_{T} = s_{T} )
+    = p_{o} ( \cdot \vert \cdot ) p ( \cdot \vert s_{T} ) = 1
+    \\
+    \gamma_{t} ( s_{i} )
+    &amp; = \Pr ( S_{t} = s_{i} \vert O_{1:T} = o_{1:T} )
+    = \frac{ \alpha_{t} ( s_{i} ) \beta_{t} ( s_{i} ) }
+    { \sum_{s_{j} \in \mathcal{S}} \alpha_{t} ( s_{j} ) \beta_{t} ( s_{j} ) }
+    \\
+    \xi_{t} ( s_{i} , s_{j} )
+    &amp; = \Pr ( S_{t} = s_{i} , S_{t+1} = s_{j} \vert O_{1:T} = o_{1:T} )
+    = \frac{ p_{o} ( o_{t+1} \vert s_{j} ) p ( s_{j} \vert s_{i} ) \alpha_{t} ( s_{i} ) \beta_{t+1} ( s_{j} ) }
+    { \sum_{s_{l} \in \mathcal{S}} \sum_{s_{k} \in \mathcal{S}} p_{o} ( o_{t+1} \vert s_{l} ) p ( s_{l} \vert s_{k} ) \alpha_{t} ( s_{k} ) \beta_{t+1} ( s_{l} ) }
+\end{align}\]
+
+<p>Since the environment dynamics in an HMM, \(p_{0}\), \(p\) and \(p_{o}\), are usually unknown in practice, the Baum-Welch algorithm is used to estimate them.</p>
+
+<ol>
+  <li>
+    <p>Expectation step</p>
+
+\[\begin{align}
+     \gamma_{t} ( s_{i} )
+     = \frac{ \alpha_{t} ( s_{i} ) \beta_{t} ( s_{i} ) }
+     { \sum_{s_{j} \in \mathcal{S}} \alpha_{t} ( s_{j} ) \beta_{t} ( s_{j} ) }
+     \quad
+     \xi_{t} ( s_{i} , s_{j} )
+     = \frac{ p_{o} ( o_{t+1} \vert s_{j} ) p ( s_{j} \vert s_{i} ) \alpha_{t} ( s_{i} ) \beta_{t+1} ( s_{j} ) }
+     { \sum_{s_{l} \in \mathcal{S}} \sum_{s_{k} \in \mathcal{S}} p_{o} ( o_{t+1} \vert s_{l} ) p ( s_{l} \vert s_{k} ) \alpha_{t} ( s_{k} ) \beta_{t+1} ( s_{l} ) }
+ \end{align}\]
+  </li>
+  <li>
+    <p>Maximization step</p>
+
+\[\begin{align}
+     p_{0} ( s_{i} ) = \gamma_{1} ( s_{i} )
+     \quad
+     p ( s_{j} \vert s_{i} ) = \frac{ \sum_{t=1}^{T-1} \xi_{t} ( s_{i} , s_{j} ) }
+     { \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }
+     \quad
+     p_{o} ( o_{i} \vert s_{i} ) = \frac{ \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) \mathbb{1} ( o_{t} = o_{i} ) }
+     { \sum_{t=1}^{T-1} \gamma_{t} ( s_{i} ) }
+ \end{align}\]
+  </li>
+</ol>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="http://www.columbia.edu/~ks20/stochastic-I/stochastic-I.html">Lecture Notes on Stochastic Modeling I</a></li>
+  <li><a href="http://www.stat.yale.edu/~jtc5/251/readings/Basics%20of%20Applied%20Stochastic%20Processes_Serfozo.pdf">Basics of Applied Stochastic Processes</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#mathematics-x003a-markov-model" class="page__taxonomy-item" rel="tag">Mathematics&#x003a; Markov Model</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-15">April 15, 2023</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Markov+Chain%20http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmathematics%2Fmarkov_model_1_markov_chain%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmathematics%2Fmarkov_model_1_markov_chain%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmathematics%2Fmarkov_model_1_markov_chain%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/" class="pagination--pager" title="Policy-based Reinforcement Learning
+">Previous</a>
+    
+    
+      <a href="/posts/mathematics/markov_model_2_markov_decision_process/" class="pagination--pager" title="Markov Decision Process
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/neuroscience/spinal_cord_brain_and_nervous_system/" rel="permalink">Spinal Cord, Brain and Nervous System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          21 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the field of neuroscience, there are specific biological components that play unique roles. The brain serves as the primary organ for processing informati...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/neuroscience/neuron_and_neural_tissue/" rel="permalink">Neuron and Neural Tissue
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          24 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the field of neuroscience, there are specific biological components that play unique roles. A neuron acts as an electrical device that sends a signal by i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/mathematics/markov_model_2_markov_decision_process/" rel="permalink">Markov Decision Process
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          33 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A Markov decision process is a type of Markov models used in decision making problems, which describes the world with a controllable system. It is used to mo...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/" rel="permalink">Policy-based Reinforcement Learning
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          39 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Policy-based reinforcement learning is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly map...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Kel'Logg. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/posts/mathematics/markov_model_1_markov_chain/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/posts/mathematics/markov_model_1_markov_chain"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kellogg-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+<!-- mathjax -->
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+
+  </body>
+</html>

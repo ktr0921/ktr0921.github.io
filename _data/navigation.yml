@@ -1,0 +1,14 @@
+
+main:
+  - title: "Posts"
+    url: /posts/
+  - title: "Categories"
+    url: /categories/
+  - title: "Mathematics"
+    url: /mathematics/
+  - title: "Neuroscience"
+    url: /neuroscience/
+  - title: "Machine Learning"
+    url: /machine_learning/
+  - title: "About"
+    url: /about/

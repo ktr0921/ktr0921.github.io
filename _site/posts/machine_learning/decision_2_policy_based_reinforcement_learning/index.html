@@ -1,0 +1,1810 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Policy-based Reinforcement Learning - Kel’Logg</title>
+<meta name="description" content="Policy-based reinforcement learning is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly mapping from the state to the action, such that maximizes the return. This post aims to provide a tutorial on policy-based reinforcement learning algorithms and introduce a combination of value-based and policy-based reinforcement learning algorithm.">
+
+
+  <meta name="author" content="D. K. Ryu">
+  
+  <meta property="article:author" content="D. K. Ryu">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kel'Logg">
+<meta property="og:title" content="Policy-based Reinforcement Learning">
+<meta property="og:url" content="http://localhost:4000/posts/machine_learning/decision_2_policy_based_reinforcement_learning/">
+
+
+  <meta property="og:description" content="Policy-based reinforcement learning is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly mapping from the state to the action, such that maximizes the return. This post aims to provide a tutorial on policy-based reinforcement learning algorithms and introduce a combination of value-based and policy-based reinforcement learning algorithm.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-15T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2023-04-15T00:00:00+09:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/posts/machine_learning/decision_2_policy_based_reinforcement_learning/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kel'Logg Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Kel'Logg
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/mathematics/">Mathematics</a>
+            </li><li class="masthead__menu-item">
+              <a href="/neuroscience/">Neuroscience</a>
+            </li><li class="masthead__menu-item">
+              <a href="/machine_learning/">Machine Learning</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/bio-photo.jpg" alt="D. K. Ryu" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">D. K. Ryu</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Ph.D. candidate in reinforcement learning and natural language processing</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="www.linkedin.com/in/dkryu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/ktr0921" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:dongwon.ryu@monash.edu" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Policy-based Reinforcement Learning">
+    <meta itemprop="description" content="Policy-based reinforcement learning is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly mapping from the state to the action, such that maximizes the return. This post aims to provide a tutorial on policy-based reinforcement learning algorithms and introduce a combination of value-based and policy-based reinforcement learning algorithm.">
+    <meta itemprop="datePublished" content="2022-09-15T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2023-04-15T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Policy-based Reinforcement Learning
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          39 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Table of Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#policy-gradient">Policy Gradient</a><ul><li><a href="#policy-gradient-theorem">Policy Gradient Theorem</a></li><li><a href="#policy-gradient-with-function-approximation">Policy Gradient with Function Approximation</a></li></ul></li><li><a href="#deterministic-policy-gradient">Deterministic Policy Gradient</a><ul><li><a href="#deterministic-policy-gradient-theorem">Deterministic Policy Gradient Theorem</a></li><li><a href="#compatible-function-approximation">Compatible Function Approximation</a></li></ul></li><li><a href="#practical-algorithm">Practical Algorithm</a><ul><li><a href="#reinforce">REINFORCE</a></li><li><a href="#actor-critic">Actor Critic</a></li></ul></li><li><a href="#summary">Summary</a><ul><li><a href="#reference">Reference</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        
+<div class="notice--primary">
+  
+<p><strong>Prerequisites</strong></p>
+
+<ul>
+  <li><a href="/posts/mathematics/markov_model_1_markov_chain">Markov Chain</a></li>
+  <li><a href="/posts/mathematics/markov_model_2_markov_decision_process">Markov Decision Process</a></li>
+  <li><a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning">Value-based Reinforcement Learning</a></li>
+</ul>
+
+</div>
+
+<blockquote>
+    Machine intelligence is the last invention that humanity will ever need to make.
+    <br />
+    <cite>Nick Bostrom</cite>
+</blockquote>
+
+<p>If the universe is constructed with patterns and humans can interpret this, then so may machines. If machines become intelligent over humans, <em>humans need not apply</em>.</p>
+
+<p><strong>Machine learning</strong> is the study of algorithms that involve training a computer to learn patterns and relationships in data without being explicitly programmed. It can be divided into three types:</p>
+<ul>
+  <li><strong>Supervised Learning</strong>: The algorithm, or model, is trained on labeled data, where the goal is to map each input to the correct output.</li>
+  <li><strong>Unsupervised Learning</strong>: The algorithm, or model, is trained on unlabeled data, where the goal is to identify patterns or structure in the data without being told what to look for.</li>
+  <li><strong>Reinforcement Learning</strong>: The algorithm, or agent, is trained on the interactive worlds, where the goal is to learn a policy that maximizes rewards and minimize penalties.</li>
+</ul>
+
+<p>The problems in ML can be largely divided by four types:</p>
+<ul>
+  <li><strong>Computer Vision</strong>: The problems require machines to interpret and understand visual data, i.e. images and videos. They includes image classification, object localization, video analysis, image captioning and visual question answering.</li>
+  <li><strong>Natural Language Processing</strong>: The problems require machines to interpret and understand human language, i.e. words and documents. They includes text classification, translation, summarization, speech analysis, question answering and dialogue system.</li>
+  <li><strong>Graph Analysis</strong>: The problems require machines to interpret and understand graph data, i.e. nodes and edges in graphs. They includes graph classification, link prediction, knowledge graph, social network analysis, recommendation system, combinatorial optimization and path finding.</li>
+  <li><strong>Decision Making</strong>: The problems require machines to interact with the world and choose an appropriate action based on data and objectives. They include game playing, autonomous vehicles and robotics.</li>
+</ul>
+
+<p><strong>Reinforcement learning</strong> is a subfield of machine learning, popular in decision making problems. The algorithms are generally grouped by:</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px"> </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px" colspan="2"> <b>Value-based</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px" rowspan="2"> <b>Policy-based</b> </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px"> </td>
+        <td style="text-align: center; vertical-align: middle; width: 200px"> <b>Model-based</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 200px"> <b>Model-free</b> </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px">
+            <b>Classic</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 200px">
+            <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/#policy-iteration">Policy Iteration</a>,
+            <br />
+            <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/#value-iteration">Value Iteration</a>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 200px">
+            <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/#policy-evaluation">Monte Carlo</a>,
+            <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/#sarsa">SARSA</a>,
+            <br />
+            <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/#q-learning">Q Learning</a>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/#policy-gradient">
+                Policy Gradient
+            </a>,
+            <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/#deterministic-policy-gradient">
+                Deterministic Policy Gradient
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px">
+            <b>Deep</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px" colspan="2">
+            Deep Q Network, Double Deep Q Network,
+            <br />
+            Duel Deep Q Network, Rainbow
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 400px">
+            Vanilla Policy Gradient, Natural Policy Gradient,
+            <br />
+            Trust Region Policy Optimization,
+            <br />
+            Proximal Policy Optimization
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px">
+            <b>Classic</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 1000px" colspan="4">
+            <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/#actor-critic">Actor Critic</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 100px">
+            <b>Deep</b>
+        </td>
+        <td style="text-align: center; vertical-align: middle; width: 1000px" colspan="4">
+            Deep Deterministic Policy Gradient, Twin Delayed Deep Deterministic Policy Gradient,
+            <br />
+            Soft Q Learning, Soft Actor Critic
+        </td>
+    </tr>
+</table>
+
+<p><strong>Policy-based reinforcement learning</strong> is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly mapping from the state to the action, such that maximizes the return. Unlike value-based reinforcement learning, policy-based reinforcement learning attempts directly find the optimal policy by optimizing:</p>
+
+\[\begin{equation}
+    \mathcal{J} ( \theta )
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } [ R ( s , a ) ]
+\end{equation}\]
+
+<p>Where maximizing the objective is to obtain \(\pi_{\theta}\) such that maximizes \(R\) for every \(s\) and \(a\). This post aims to provide a tutorial on policy-based reinforcement learning algorithms and introduce a combination of value-based and policy-based reinforcement learning algorithm.</p>
+
+<h1 id="policy-gradient">Policy Gradient</h1>
+
+<p>The <strong>policy gradient (PG)</strong> is an on-policy reinforcement learning (RL) algorithm that finds the optimal policy using the Monte-Carlo (MC) method. Unlike value-based methods, the PG parameterizes the policy with a function approximator such that maximizes the return. This has two advantages over value-based RL algorithms.</p>
+<ol>
+  <li>The policy is naturally stochastic.</li>
+  <li>The action space can be either discrete or continuous.</li>
+</ol>
+
+<p>Consider the standard RL framework with an agent with the parameterized policy, \(\pi_{\theta}\), where \(\theta\) is the parameter. The optimal policy, \(\pi^{\ast}\), is:</p>
+
+\[\begin{equation}
+    \pi^{\ast} ( a \vert s ) = \arg \max_{\pi} \mathbb{E}_{ s \sim d^{\pi}, a \sim \pi } [ R ( s , a ) ]
+\end{equation}\]
+
+<p>Then, the objective function can be expressed as:</p>
+
+\[\begin{equation}
+    \mathcal{J} ( \theta )
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } [ R ( s , a ) ]
+\end{equation}\]
+
+<p>Maximizing the objective through gradient ascent obtains \(\theta\) that results in the policy which drives the agent to the high expected return at <em>any</em> state-action pair.</p>
+<ul>
+  <li>The PG objective is different from \(Q^{\pi_{\theta}} ( s , a ) = \mathbb{E}_{ \tau \sim \pi_{\theta} } [ R_{t} \vert s_{t} = s , a_{t} = a ]\).
+    <ul>
+      <li>The Q value is the expectation of the return for a particular state-action pair.</li>
+      <li>The PG objective is the expectation of the return for <em>any</em> state-action pair.</li>
+    </ul>
+  </li>
+  <li>If the MDP is average-reward continuous and ergodic, maximizing \(Q^{\pi_{\theta}}\) is actually the same as the PG objective.</li>
+</ul>
+
+<p>The PG objective function has many equivalent expressions.</p>
+
+\[\begin{align}
+    \mathcal{J} ( \theta )
+    &amp; = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } [ R ( s , a ) ]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) R ( s , a )
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } \left[ Q^{\pi_{\theta}} (s, a) \right]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a)
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}} } \left[ V^{\pi_{\theta}} (s) \right]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) V^{\pi_{\theta}} (s)
+    \\
+    &amp; \equiv \mathbb{E}_{ s_{0} \sim p_{0} } \left[ V^{\pi_{\theta}} (s_{0}) \right]
+    = \sum_{s_{0} \in \mathcal{S}} p_{0} ( s_{0} ) V^{\pi_{\theta}} (s_{0})
+\end{align}\]
+
+<p>Maximizing any of the expressions leads to the optimal policy.</p>
+<ul>
+  <li>Since \(d^{\pi_{\theta}} ( s ) \in [0, 1]\) and \(\pi_{\theta} (a \vert s) \in [0, 1]\), \(\sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) R ( s , a )\) is the expectation of the \(R\).</li>
+  <li>Even if \(Q^{\pi_{\theta}}\) is not the same as the PG objective, acquiring \(\theta\) that maximizes \(Q^{\pi_{\theta}}\) is equivalent to maximizing \(R\).</li>
+</ul>
+
+<h2 id="policy-gradient-theorem">Policy Gradient Theorem</h2>
+
+<p>Computing the gradient of the PG objective, \(\nabla_{\theta} \mathcal{J}\), is very difficult since:</p>
+<ul>
+  <li>\(\nabla_{\theta} \left( \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) R ( s , a ) \right)\) is intractable because \(d^{\pi_{\theta}} ( s )\), \(\pi_{\theta} (a \vert s)\), \(Q^{\pi_{\theta}} (s, a)\), \(V^{\pi_{\theta}} (s)\) and \(R ( s , a )\) are dependent on \(\theta\).</li>
+  <li>\(\nabla_{\theta} R ( s , a )\) where \(s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta}\) is doable because \(Q^{\pi_{\theta}} (s, a)\), \(V^{\pi_{\theta}} (s)\) and \(R ( s , a )\) are not explicit functions of \(\theta\).</li>
+</ul>
+
+<p>The <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 1 (Policy Gradient)</strong></a> allows us to approximate \(\nabla_{\theta} \mathcal{J}\) into tractable form.</p>
+
+\[\begin{align}
+    \nabla_{\theta} \mathcal{J} ( \theta )
+    &amp; = \nabla_{\theta}
+    \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s )
+    \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a)
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} }
+    \left[ \nabla_{\theta} Q^{\pi_{\theta}} (s, a) \right]
+    \\
+    &amp; \propto
+    \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s )
+    \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a) \nabla_{\theta} \pi_{\theta} (a \vert s)
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} }
+    \left[ Q^{\pi_{\theta}} (s, a) \nabla_{\theta} \ln \pi_{\theta} (a \vert s) \right]
+\end{align}\]
+
+<p>In the original paper, the theorem is proved in two different environments, <em>start-state episodic</em> and <em>average-reward continuous</em>, but in this post, I will stick with the episodic environment without a discount factor since it is more intuitive and blends well with previous posts.</p>
+
+<p>The gradient of the PG objective can be defined as:</p>
+
+\[\begin{equation}
+    \nabla_{\theta} \mathcal{J} ( \theta )
+    \equiv \nabla_{\theta} \mathbb{E}_{ s \sim d^{\pi_{\theta}} } \left[ V^{\pi_{\theta}} (s) \right]
+    \equiv \nabla_{\theta} V^{\pi_{\theta}} (s)
+    \quad
+    \forall s \in \mathcal{S}
+\end{equation}\]
+
+<p>We can decompose \(\nabla_{\theta} V^{\pi_{\theta}} ( s )\) into:</p>
+
+\[\require{color}
+\begin{align}
+    \textcolor{red}{\nabla_{ \theta }} V^{ \pi_{\theta} } (s)
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \left( \sum_{a \in \mathcal{A} } \pi_\theta (a \vert s) Q^{\pi_{\theta}} (s, a) \right)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} \left(
+    \bigl( \textcolor{red}{\nabla_{ \theta }} \pi_{\theta} (a \vert s) \bigr)
+    Q^{\pi_{\theta}} (s, a)
+    + \pi_{\theta} (a \vert s)
+    \bigl( \textcolor{red}{\nabla_{ \theta }} Q^{\pi_{\theta}} (s, a) \bigr)
+    \right)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} \left(
+    Q^{\pi_{\theta}} (s, a) \textcolor{red}{\nabla_{ \theta }} \pi_{\theta} (a \vert s)
+    + \pi_{\theta} (a \vert s)
+    \left( \textcolor{red}{\nabla_{ \theta }} \sum_{s' \in \mathcal{S}} p(s' \vert s, a) \textcolor{blue}{(r (s, a) + V^{\pi_{\theta}} (s'))} \right)
+    \right)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} \left(
+    Q^{\pi_{\theta}} (s, a) \textcolor{red}{\nabla_{ \theta }} \pi_{\theta} (a \vert s)
+    + \pi_{\theta} (a \vert s)
+    \sum_{s' \in \mathcal{S}} p(s' \vert s,a) \textcolor{blue}{} \textcolor{red}{\nabla_{ \theta }} \textcolor{blue}{V^{\pi_{\theta}}(s')}
+    \right)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}}
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \pi_{\theta} (a \vert s)
+    + \sum_{a \in \mathcal{A}}
+    \left( \pi_{\theta} (a \vert s) \sum_{s' \in \mathcal{S}} p(s' \vert s,a) \nabla_{ \theta} V^{\pi_{\theta}}(s') \right)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}}
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \pi_{\theta} (a \vert s)
+    + \sum_{s' \in \mathcal{S}}
+    \left( \textcolor{red}{\sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) p(s' \vert s,a)} \right)
+    \nabla_{ \theta} V^{\pi_{\theta}}(s')
+    \\
+    = &amp; \sum_{a \in \mathcal{A}}
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \pi_{\theta} (a \vert s)
+    + \sum_{s' \in \mathcal{S}}
+    \textcolor{blue}{\Pr (s \rightarrow s' \vert 1, \pi_{\theta})}
+    \nabla_{ \theta} V^{\pi_{\theta}}(s')
+\end{align}\]
+
+<p>Where the state visitation probability is \(\textcolor{blue}{\Pr (s \rightarrow s' \vert 1, \pi_{\theta})} = \textcolor{red}{\sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) p(s' \vert s,a)}\).</p>
+
+<p>Then, recursively:</p>
+
+\[\require{color}
+\begin{align}
+    \nabla_{ \theta } V^{ \pi_{\theta} } (\textcolor{red}{s})
+    = &amp; \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{red}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{red}{s})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \nabla_{ \theta} V^{\pi_{\theta}}(\textcolor{blue}{s'})
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{red}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{red}{s})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \Biggl( \sum_{a’ \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s'}, a’) \nabla_{ \theta } \pi_{\theta} (a’ \vert \textcolor{blue}{s'})
+    + \sum_{\textcolor{green}{s''} \in \mathcal{S}} \Pr (\textcolor{blue}{s'} \rightarrow \textcolor{green}{s''} \vert 1, \pi_{\theta})
+    \nabla_{ \theta} V^{\pi_{\theta}}(\textcolor{green}{s''}) \Biggr)
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{red}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{red}{s})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \sum_{a’ \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s'}, a’) \nabla_{ \theta } \pi_{\theta} (a’ \vert \textcolor{blue}{s'})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \sum_{\textcolor{green}{s''} \in \mathcal{S}} \Pr (\textcolor{blue}{s'} \rightarrow \textcolor{green}{s''} \vert 1, \pi_{\theta})
+    \nabla_{ \theta} V^{\pi_{\theta}}(\textcolor{green}{s''})
+    \\
+    = &amp; \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{red}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{red}{s})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \sum_{a’ \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s'}, a’) \nabla_{ \theta } \pi_{\theta} (a’ \vert \textcolor{blue}{s'})
+    \\
+    &amp; + \sum_{\textcolor{green}{s''} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{green}{s''} \vert 2, \pi_{\theta})
+    \nabla_{ \theta} V^{\pi_{\theta}}(\textcolor{green}{s''})
+    \\
+    = &amp; \sum_{\textcolor{red}{s} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{red}{s} \vert 0, \pi_{\theta})
+    \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{red}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{red}{s})
+    \\
+    &amp; + \sum_{\textcolor{blue}{s'} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{blue}{s'} \vert 1, \pi_{\theta})
+    \sum_{a’ \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s'}, a’) \nabla_{ \theta } \pi_{\theta} (a’ \vert \textcolor{blue}{s'})
+    \\
+    &amp; + \sum_{\textcolor{green}{s''} \in \mathcal{S}} \Pr (\textcolor{red}{s} \rightarrow \textcolor{green}{s''} \vert 2, \pi_{\theta})
+    \sum_{a’’ \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{green}{s''}, a'') \nabla_{ \theta } \pi_{\theta} (a'' \vert \textcolor{green}{s''})
+    + \cdots
+    \\
+    = &amp; \sum_{\textcolor{violet}{x} \in \mathcal{S}} \sum_{\textcolor{orange}{k} = 0}^{\infty}
+    \Pr (\textcolor{red}{s} \rightarrow \textcolor{violet}{x} \vert \textcolor{orange}{k}, \pi_{\theta})
+    \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{violet}{x}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{violet}{x})
+\end{align}\]
+
+<p>Finally, the update is:</p>
+
+\[\begin{align}
+    \nabla_{ \theta } \mathcal{J} (\theta)
+    \equiv &amp; \sum_{\textcolor{red}{s_{0}} \in \mathcal{S}} p ( \textcolor{red}{s_{0}} ) \nabla_{ \theta } V^{ \pi_{\theta} } (\textcolor{red}{s_{0}})
+    \\
+    = &amp; \sum_{\textcolor{red}{s_{0}} \in \mathcal{S}} p ( \textcolor{red}{s_{0}} )
+    \sum_{\textcolor{blue}{s} \in \mathcal{S}} \sum_{\textcolor{orange}{k} = 0}^{\infty}
+    \Pr (\textcolor{red}{s_{0}} \rightarrow \textcolor{blue}{s} \vert \textcolor{orange}{k}, \pi_{\theta})
+    \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{blue}{s})
+    \\
+    = &amp; \sum_{\textcolor{blue}{s} \in \mathcal{S}}
+    \left(
+    \sum_{\textcolor{red}{s_{0}} \in \mathcal{S}}
+    \sum_{\textcolor{orange}{k} = 0}^{\infty}
+    p ( \textcolor{red}{s_{0}} )
+    \Pr (\textcolor{red}{s_{0}} \rightarrow \textcolor{blue}{s} \vert \textcolor{orange}{k}, \pi_{\theta}) \right)
+    \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s}, a) \nabla_{ \theta } \pi_{\theta} (a \vert \textcolor{blue}{s})
+    \\
+    = &amp; \sum_{\textcolor{blue}{s} \in \mathcal{S}} d^{\pi_{\theta}} ( \textcolor{blue}{s} )
+    \sum_{a \in \mathcal{A}} Q^{\pi_{\theta}} (\textcolor{blue}{s}, a) \nabla_{ \theta} \pi_{\theta} (a \vert \textcolor{blue}{s})
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \frac{ \pi_{\theta} (a \vert s) }{\pi_{\theta} (a \vert s)} Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \pi_{\theta} (a \vert s)
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a) \frac{ \nabla_{ \theta} \pi_{\theta} (a \vert s) }{\pi_{\theta} (a \vert s)}
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } \left[ Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s) \right]
+\end{align}\]
+
+<p>Another way to view the PG objective is from the log-likelihood. The PG objective without the value function is actually the same as the objective used in the <em>behavioral cloning</em> in imitation learning and more generally the log-likelihood in supervised learning. In the behavioral cloning, there are two factors that determine the policy:</p>
+<ol>
+  <li>The representation of the demonstrations in the dataset</li>
+  <li>The sampling distribution of the demonstrations from the dataset</li>
+</ol>
+
+<p>If the sampling distribution is skewed for the update, the agent will learn the representations of the demonstration data that are more frequently sampled. On the other hand, the PG contains the value function in its objective. This enforces the agent to learn from:</p>
+<ol>
+  <li>The representation of the experiences</li>
+  <li>The sampling distribution of the experiences which is determined by the exploration</li>
+  <li>The value function as the magnitude of the acquired experiences</li>
+</ol>
+
+<p>Thus, what the value function does is that it acts as the magnitude on how important the experience is. This will be discussed in later posts.</p>
+
+<h2 id="policy-gradient-with-function-approximation">Policy Gradient with Function Approximation</h2>
+
+<p>The use of the real Q value results in high variance since it uses MC to construct the Q value. To reduce this variance, we can use another function approximator for Q value with parameter \(\phi\), where \(Q_{\phi} : \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}\), under the <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 2 (Policy Gradient with Function Approximation)</strong></a>, which deals with two conditions:</p>
+
+\[\begin{equation}
+    \nabla_{ \phi } Q_{ \phi } (s, a) = \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \qquad
+    \nabla_{ \phi } \mathcal{J} ( \phi )
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    \left( Q_{\phi} (s, a) - Q^{\pi_{\theta}} (s, a) \right)^{2}
+    \right]
+    \leq
+    \varepsilon
+\end{equation}\]
+
+<p>Where \(\varepsilon\) is a small real number.</p>
+<ul>
+  <li>The first condition is that the gradient of the estimated Q value, \(\nabla_{ \phi } Q_{ \phi } (s, a)\), must be equal to \(\nabla_{ \theta} \ln \pi_{\theta} (a \vert s)\).</li>
+  <li>The second is that \(Q_{\phi} (s, a)\) must be optimized with the mean squared error with respect to \(Q^{\pi_{\theta}} (s, a)\).</li>
+</ul>
+
+<p>This is actually outside of the scope of the PG since this introduces the value-based method into the policy-based method. However, since the original paper proves this, here it goes. The objective of the Q value can be expressed as:</p>
+
+\[\begin{align}
+    \nabla_{ \phi } \mathcal{J} ( \phi )
+    = &amp; \nabla_{ \phi } \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    \left( Q_{ \phi } (s, a) - Q^{\pi_{\theta}} (s, a) \right)^{2}
+    \right]
+    = \nabla_{ \phi } \varepsilon= 0
+    \\
+    = &amp; \nabla_{ \phi } \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    \left( Q_{ \phi } (s, a) - Q^{\pi_{\theta}} (s, a) \right)^{2}
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    \cdot 2 \left( Q_{ \phi } (s, a) - Q^{\pi_{\theta}} (s, a) \right) \nabla_{ \phi } Q_{ \phi } (s, a)
+    \\
+    \propto &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    \left( Q_{ \phi } (s, a) - Q^{\pi_{\theta}} (s, a) \right) \nabla_{ \phi } Q_{ \phi } (s, a)
+    \quad
+    \nabla_{ \phi } Q_{ \phi } (s, a) = \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    \left( Q_{ \phi } (s, a) - Q^{\pi_{\theta}} (s, a) \right) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \\
+    = &amp; \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    Q_{ \phi } (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    - \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s) = 0
+\end{align}\]
+
+<p>This means:</p>
+
+\[\begin{align}
+    \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    Q_{ \phi } (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    &amp; = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s)
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \\
+    \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    Q_{ \phi } (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \right]
+    &amp; = \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \right]
+\end{align}\]
+
+<p>Therefore, 1) if \(\nabla_{ \phi } Q_{ \phi } (s, a) = \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)\) holds and 2) if the function approximation of \(Q_{ \phi }\) is optimized with the mean squared error with \(Q^{\pi_{\theta}}\), we can set the objective function as:</p>
+
+\[\begin{equation}
+    \nabla_{ \theta } \mathcal{J} (\theta)
+    \propto \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \right]
+    \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    Q_{ \phi } (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \right]
+\end{equation}\]
+
+<p>In traditional PG, the policy distribution is constructed with parameter, \(\theta\), and a feature vector of state-action pair, \(\mathbf{x} ( s , a )\), where \(\theta, \mathbf{x} ( s , a ) \in \mathbb{R}^{n}\).</p>
+
+<p>Consider a cartpole problem with two state features, \(( x_{p} , x_{v} )\) as (Position, Velocity), and two actions, \(( a_{l} , a_{r} )\) as (Left, Right). The simplest form of \(\mathbf{x} ( s , a )\) can be expressed as:</p>
+
+\[\begin{equation}
+    \mathbf{x} ( s , a = a_{l} ) = \begin{bmatrix} x_{p} &amp; x_{v} &amp; 0 &amp; 0 \end{bmatrix}
+    \qquad
+    \mathbf{x} ( s , a = a_{r} ) = \begin{bmatrix} 0 &amp; 0 &amp; x_{p} &amp; x_{v} \end{bmatrix}
+    \qquad
+    \theta = \begin{bmatrix} \theta_{pl} &amp; \theta_{vl} &amp; \theta_{pr} &amp; \theta_{vr} \end{bmatrix}^{\intercal}
+\end{equation}\]
+
+<p>For a given \(\theta\), parameterized policy will be:</p>
+
+\[\begin{equation}
+    \pi_{\theta} (a_{l} \vert s) = \mathbf{x} ( s , a = a_{l} ) \cdot \theta
+    \qquad
+    \pi_{\theta} (a_{r} \vert s) = \mathbf{x} ( s , a = a_{r} ) \cdot \theta
+\end{equation}\]
+
+<p>Thus, the first two values of \(\theta\) learn to map features to \(a_{l}\) and the last two map features to \(a_{r}\). However, \(\theta\) and \(\mathbf{x}\) are the design choice, so based on the problems and algorithms, they vary.</p>
+
+<p>There are two types of policy distribution that meet the two conditions in the <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 2 (Policy Gradient with Function Approximation)</strong></a>.</p>
+<ul>
+  <li>
+    <p><strong>Softmax policy distribution</strong>: A Gibbs distribution in a linear combination of features, a.k.a. softmax policy distribution, to produce action probability for discrete action space.</p>
+
+\[\begin{equation}
+      \pi_{\theta} (a \vert s)
+      = \text{Softmax} ( e^{ \mathbf{x} ( s , a ) \cdot \theta } )
+      = \frac{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } }
+  \end{equation}\]
+
+    <ul>
+      <li>Where softmax signifies the normalization of \(e^{ \mathbf{x} ( s , a ) \cdot \theta }\) across all the actions. To meet the condition in the <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 2 (Policy Gradient with Function Approximation)</strong></a>:</li>
+    </ul>
+
+\[\require{color}
+  \begin{align}
+      \nabla_{ \phi } Q_{ \phi } (s, a)
+      &amp; = \nabla_{ \theta } \ln \pi_{\theta} (a \vert s)
+      = \frac{ \nabla_{ \theta } \pi_{\theta} (a \vert s) }{\pi_{\theta} (a \vert s)}
+      \\
+      &amp; = \frac{ 1 }{ \pi_{\theta} (a \vert s) }
+      \nabla_{ \theta }
+      \textcolor{green}{ \frac{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      { \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)}
+      \frac{ \left( \nabla_{ \theta } \textcolor{blue}{ e^{ \mathbf{x} ( s , a ) \cdot \theta } } \right)
+      \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } }
+      - \textcolor{blue}{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      \left( \nabla_{ \theta } \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } \right) }
+      { \left( \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } \right)^{2} }
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)}
+      \left(
+      \frac{ \mathbf{x} ( s , a ) \textcolor{blue}{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      { \left( \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } \right)^{2} }
+      - \frac{ \textcolor{blue}{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      \sum_{ a' \in \mathcal{A} } \mathbf{x} ( s , a' ) e^{ \mathbf{x} ( s , a' ) \cdot \theta } }
+      { \left( \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } \right)^{2} }
+      \right)
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)}
+      \left(
+      \mathbf{x} ( s , a )
+      \textcolor{green}{ \frac{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      { \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      - \textcolor{green}{ \frac{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }
+      { \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      \cdot \frac{ \sum_{ a' \in \mathcal{A} } \mathbf{x} ( s , a' ) e^{ \mathbf{x} ( s , a' ) \cdot \theta } }
+      { \textcolor{red}{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      \right)
+      \\
+      &amp; = \frac{ 1 }{ \pi_{\theta} (a \vert s) }
+      \left( \mathbf{x} ( s , a ) \cdot \pi_{\theta} (a \vert s)
+      - \pi_{\theta} (a \vert s) \sum_{ a'' \in \mathcal{A} } \mathbf{x} ( s , a'' )
+      \textcolor{green}{ \frac{ e^{ \theta \cdot \mathbf{x} ( s , a'' ) } }
+      { \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } } }
+      \right)
+      \\
+      &amp; = \mathbf{x} ( s , a ) - \sum_{ a' \in \mathcal{A} } \mathbf{x} ( s , a' ) \pi_{\theta} (a' \vert s)
+  \end{align}\]
+
+    <ul>
+      <li>Where \(\theta, \mathbf{x} \in \mathbb{R}^{n}\). Thus, Q value is parameterized with \(\phi \in \mathbb{R}^{n}\).</li>
+    </ul>
+
+\[\begin{equation}
+      Q_{ \phi } (s, a)
+      = \left( \mathbf{x} ( s , a ) - \sum_{ a' \in \mathcal{A} } \mathbf{x} ( s , a' ) \pi_{\theta} (a' \vert s) \right) \cdot \phi
+  \end{equation}\]
+  </li>
+  <li>
+    <p><strong>Gaussian policy distribution</strong>: A Gaussian distribution with a parameterized mean and a fixed standard deviation for continuous action space.</p>
+
+\[\begin{equation}
+      \pi_{\theta} (a \vert s) = \mathcal{N} ( \mu ( s , a ) , \sigma^{2} )
+      \quad
+      \mu ( s , a ) = \mathbf{x} ( s , a ) \cdot \theta
+  \end{equation}\]
+
+    <ul>
+      <li>Where \(\mu\) is the parameterized mean of Gaussian distribution and \(\sigma\) is the fixed standard deviation. To meet the condition in the <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 2 (Policy Gradient with Function Approximation)</strong></a>:</li>
+    </ul>
+
+\[\require{color}
+  \begin{align}
+      \nabla_{ \phi } Q_{ \phi } (s, a)
+      &amp; = \nabla_{ \theta } \ln \pi_{\theta} (a \vert s)
+      = \frac{ \nabla_{ \theta } \pi_{\theta} (a \vert s) }{\pi_{\theta} (a \vert s)}
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)} \nabla_{ \theta } \mathcal{N} ( \mu ( s , a ) , \sigma^{2} )
+      = \frac{ 1 }{\pi_{\theta} (a \vert s)}
+      \left( \nabla_{ \theta } \frac{1}{ \sigma \sqrt{ 2 \pi } }
+      e^{ - \frac{ ( a - \mu ( s , a ) )^{2} }{ 2 \sigma^{2} } } \right)
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)}
+      \left( \frac{1}{ \sigma \sqrt{ 2 \pi } }
+      e^{ - \frac{ ( a - \mu ( s , a ) )^{2} }{ 2 \sigma^{2} } } \right)
+      - \frac{ \nabla_{ \theta } ( a - \mu ( s , a ) )^{2} }{ 2 \sigma^{2} }
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)} \mathcal{N} ( \mu ( s , a ) , \sigma^{2} )
+      - \frac{ -2 ( a - \mu ( s , a ) ) \nabla_{ \theta } \mu ( s , a ) }{ 2 \sigma^{2} }
+      \\
+      &amp; = \frac{ 1 }{\pi_{\theta} (a \vert s)} \pi_{\theta} (a \vert s)
+      + \frac{ ( a - \mu ( s , a ) ) \mathbf{x} ( s , a ) }{ \sigma^{2} }
+      \\
+      &amp; = \mathbf{x} ( s , a ) \frac{ a - \mu ( s , a ) }{ \sigma^{2} }
+  \end{align}\]
+
+    <ul>
+      <li>Where \(\theta, \mathbf{x} \in \mathbb{R}^{n}\). Thus, Q value is parameterized with \(\phi \in \mathbb{R}^{n}\).</li>
+    </ul>
+
+\[\begin{equation}
+      Q_{ \phi } (s, a)
+      = \left( \mathbf{x} ( s , a ) \frac{ a - \mu ( s , a ) }{ \sigma^{2} } \right) \cdot \phi
+  \end{equation}\]
+  </li>
+</ul>
+
+<p>In both cases, the agent samples action from the policy distribution \(a \sim \pi_{\theta} (a \vert s)\).</p>
+
+<h1 id="deterministic-policy-gradient">Deterministic Policy Gradient</h1>
+
+<p>The standard stochastic PG with the continuous action space requires integrating over both state and action spaces.</p>
+
+\[\begin{equation}
+    \nabla_{ \theta } \mathcal{J} (\theta)
+    \propto \int_{\mathcal{S}} d^{\pi_{\theta}} ( s )
+    \int_{\mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a)
+    \nabla_{ \theta} \ln \pi_{\theta} (a \vert s) \text{ d}a \text{ d}s
+    = \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+    Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+    \right]
+\end{equation}\]
+
+<p>To increase the computational efficiency, the <strong>deterministic policy gradient (DPG)</strong> is proposed, where the policy is no longer distribution, but just value in the continuous action space. Thus, instead of forming the Gaussian policy to sample actions, \(a \sim \mathcal{N} ( \mu ( s ) , \sigma^{2} )\), we treat the policy as the action, \(a = \mu ( s )\), or the greedy policy in the continuous action space. This allows the objective to be formalized to only integrate over the state space:</p>
+
+\[\begin{align}
+    \mathcal{J} ( \theta )
+    &amp; = \mathbb{E}_{ s \sim d^{\mu_{\theta}} } [ R ( s , \mu_{\theta} ( s ) ) ]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) R ( s , \mu_{\theta} ( s ) ) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[ Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \right]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[ V^{\mu_{\theta}} (s) \right]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) V^{\mu_{\theta}} (s) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s_{0} \sim p_{0} } \left[ V^{\mu_{\theta}} (s_{0}) \right]
+    = \int_{\mathcal{S}} p_{0} ( s_{0} ) V^{\mu_{\theta}} (s_{0}) \text{ d}s_{0}
+\end{align}\]
+
+<p>Few things to note are:</p>
+<ul>
+  <li>The reason why the DPG is more computationally efficient is <em>because the computation is independent of the action space</em>.</li>
+  <li>To avoid deficient exploration, the DPG is often implemented as off-policy with the behaviour policy, \(a \sim \beta ( a \vert s ) = \mathcal{N} ( \mu ( s ) , \sigma^{2} )\).
+    <ul>
+      <li>In other words, the DPG updates the deterministic policy with the trajectories collected by the stochastic policy.</li>
+    </ul>
+  </li>
+  <li>The original paper used \(\mu ( s )\) notation instead of \(\mu ( s , a )\) to generalize its applications.</li>
+</ul>
+
+<h2 id="deterministic-policy-gradient-theorem">Deterministic Policy Gradient Theorem</h2>
+
+<p>The <a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 1 (Deterministic Policy Gradient Theorem)</strong></a> allows us to approximate \(\nabla_{\theta} \mathcal{J}\) into tractable form.</p>
+
+\[\begin{align}
+    \nabla_{\theta} \mathcal{J} ( \theta )
+    &amp; = \nabla_{\theta}
+    \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \text{ d}s
+    = \mathbb{E}_{ s \sim d^{\mu_{\theta}} }
+    \left[ \nabla_{\theta} Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \right]
+    \\
+    &amp; \propto \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ \theta} \mu_{\theta} ( s )
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    = \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+    \nabla_{ \theta} \mu_{\theta} ( s )
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right]
+\end{align}\]
+
+<p>Of course, you can simply apply the chain rule, \(\nabla_{\theta} Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) = \nabla_{ \theta} \mu_{\theta} ( s ) \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}\), but the original paper proves this in a similar manner to the PG paper.</p>
+
+<p>The gradient of the DPG objective can be defined as:</p>
+
+\[\begin{equation}
+    \nabla_{\theta} \mathcal{J} ( \theta )
+    \equiv \nabla_{\theta} \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[ V^{\mu_{\theta}} (s) \right]
+    \equiv \nabla_{\theta} V^{\mu_{\theta}} (s)
+    \quad
+    \forall s \in \mathcal{S}
+\end{equation}\]
+
+<p>We can decompose \(\nabla_{\theta} V^{\mu_{\theta}} ( s )\) into:</p>
+
+\[\begin{align}
+    \textcolor{red}{\nabla_{ \theta }} V^{ \mu_{\theta} } (s)
+    = &amp; \textcolor{red}{\nabla_{ \theta }} Q^{\mu_{\theta}} (s, \mu_{\theta} (s))
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \left(
+    \int_{\mathcal{S}} p(s' \vert s, \mu_{\theta} ( s )) \left(
+    r ( s , \mu_{\theta} ( s ) ) + V^{\mu_{\theta}} (s')
+    \right) \text{ d}s'
+    \right)
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} r ( s , \mu_{\theta} ( s ) )
+    + \textcolor{red}{\nabla_{ \theta }}
+    \int_{\mathcal{S}} p(s' \vert s, \mu_{\theta} ( s )) V^{\mu_{\theta}} (s') \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s ) \textcolor{blue}{\nabla_{ a }} r ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \left( \textcolor{red}{\nabla_{ \theta }} p(s' \vert s, \mu_{\theta} ( s )) \right) V^{\mu_{\theta}} (s')
+    + p(s' \vert s, \mu_{\theta} ( s )) \left( \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s') \right)
+    \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s ) \textcolor{blue}{\nabla_{ a }} r ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    V^{\mu_{\theta}} (s') \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s ) \textcolor{blue}{\nabla_{ a }} p(s' \vert s, a) \vert_{a = \mu_{\theta} ( s )}
+    + p(s' \vert s, \mu_{\theta} ( s )) \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s')
+    \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s ) \textcolor{blue}{\nabla_{ a }}
+    \left. \left(
+    r ( s , a )
+    + \int_{\mathcal{S}}
+    V^{\mu_{\theta}} (s') p(s' \vert s, a)
+    \text{ d}s'
+    \right) \right\vert_{a = \mu_{\theta} ( s )}
+    + \int_{\mathcal{S}}
+    p(s' \vert s, \mu_{\theta} ( s )) \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s')
+    \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s ) \textcolor{blue}{\nabla_{ a }}
+    Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta} ( s )) \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s')
+    \text{ d}s'
+\end{align}\]
+
+<p>Then, recursively:</p>
+
+\[\begin{align}
+    \textcolor{red}{\nabla_{ \theta }} V^{ \mu_{\theta} } (s)
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s )
+    \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s')
+    \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s )
+    \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta})
+    \left(
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s' )
+    \textcolor{blue}{\nabla_{ a' }} Q^{ \mu_{\theta} } ( s' , a' ) \vert_{a' = \mu_{\theta} ( s' )}
+    + \int_{\mathcal{S}} \Pr (s' \rightarrow s'' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s'')
+    \text{ d}s''
+    \right) \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s )
+    \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s' )
+    \textcolor{blue}{\nabla_{ a' }} Q^{ \mu_{\theta} } ( s' , a' ) \vert_{a' = \mu_{\theta} ( s' )} \text{ d}s'
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta}) \int_{\mathcal{S}}
+    \Pr (s' \rightarrow s'' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s'')
+    \text{ d}s'' \text{ d}s'
+    \\
+    = &amp; \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s )
+    \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )}
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s' )
+    \textcolor{blue}{\nabla_{ a' }} Q^{ \mu_{\theta} } ( s' , a' ) \vert_{a' = \mu_{\theta} ( s' )} \text{ d}s'
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s'' \vert 2 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} V^{\mu_{\theta}} (s'')
+    \text{ d}s''
+    \\
+    = &amp; \int_{\mathcal{S}}
+    \Pr (s \rightarrow s \vert 0 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s )
+    \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s' \vert 1 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s' )
+    \textcolor{blue}{\nabla_{ a' }} Q^{ \mu_{\theta} } ( s' , a' ) \vert_{a' = \mu_{\theta} ( s' )} \text{ d}s'
+    \\
+    &amp; + \int_{\mathcal{S}}
+    \Pr (s \rightarrow s'' \vert 2 , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( s'' )
+    \textcolor{blue}{\nabla_{ a'' }} Q^{ \mu_{\theta} } ( s'' , a'' ) \vert_{a'' = \mu_{\theta} ( s'' )} \text{ d}s'' + \cdots
+    \\
+    = &amp; \int_{\mathcal{S}}
+    \sum_{k=0}^{\infty} \Pr (s \rightarrow x \vert k , \mu_{\theta})
+    \textcolor{red}{\nabla_{ \theta }} \mu_{\theta} ( x ) \textcolor{blue}{\nabla_{ a }} Q^{ \mu_{\theta} } ( x , a ) \vert_{a = \mu_{\theta} ( x )} \text{ d}x
+\end{align}\]
+
+<p>Finally, the update is:</p>
+
+\[\begin{align}
+    \nabla_{ \theta } \mathcal{J} ( \theta )
+    = &amp; \int_{\mathcal{S}} p ( s_{0} ) \nabla_{ \theta } V^{ \mu_{\theta} } ( s_{0} ) \text{ d}s_{0}
+    \\
+    = &amp; \int_{\mathcal{S}} p ( s_{0} )
+    \int_{\mathcal{S}}
+    \sum_{k=0}^{\infty} \Pr (s_{0} \rightarrow s \vert k , \mu_{\theta})
+    \nabla_{ \theta } \mu_{\theta} ( s ) \nabla_{ a } Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    \text{ d}s_{0}
+    \\
+    = &amp; \int_{\mathcal{S}}
+    \left( \int_{\mathcal{S}}
+    \sum_{k=0}^{\infty} p ( s_{0} ) \Pr (s_{0} \rightarrow s \vert k , \mu_{\theta}) \text{ d}s_{0} \right)
+    \nabla_{ \theta } \mu_{\theta} ( s ) \nabla_{ a } Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    \\
+    = &amp; \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ \theta } \mu_{\theta} ( s ) \nabla_{ a } Q^{ \mu_{\theta} } ( s , a ) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    = \mathbb{E}_{ s \sim d^{\mu_{\theta}} ( s ) } \left[
+    \nabla_{ \theta} \mu_{\theta} ( s )
+    \nabla_{ a } Q^{ \mu_{\theta} } (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right]
+\end{align}\]
+
+<p>The DPG can be seen as the PG with zero standard deviation.</p>
+
+\[\begin{equation}
+    \lim_{\sigma \rightarrow 0}
+    \nabla_{\theta} \mathcal{J} ( \pi_{ \mu_{\theta}, \sigma } ) = \nabla_{\theta} \mathcal{J} ( \mu_{\theta} )
+\end{equation}\]
+
+<ul>
+  <li>This is the <a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 2 (Limit of the Stochastic Policy Gradient)</strong></a>, which is not proven in this post.</li>
+</ul>
+
+<p>testing</p>
+
+<h2 id="compatible-function-approximation">Compatible Function Approximation</h2>
+
+<p>Similar to the PG, the DPG also provides a proof of the compatibility of a function approximator for the Q value under the <a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 3 (Compatible Function Approximation)</strong></a>. In the DPG, we use function approximator for \(\nabla_{ a } Q_{ \phi } (s, a) \vert_{a = \mu_{\theta} ( s )}\) instead of \(Q_{\phi} (s, a)\). The two conditions are:</p>
+
+\[\begin{equation}
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} = \nabla_{ \theta} \mu_{\theta} ( s ) \cdot \phi
+    \qquad
+    \mathcal{J} ( \phi )
+    = \mathbb{E}_{ s \sim d^{\mu_{\theta}}} \left[ \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right)^{2} \right]
+    \leq
+    \varepsilon
+\end{equation}\]
+
+<p>Where \(\varepsilon\) is a small real number.</p>
+<ul>
+  <li>The first condition is that the gradient of the estimated Q value for the greedy policy, \(\nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}\), must be equal to \(\nabla_{ \theta} \mu_{\theta} ( s ) \cdot \phi\).</li>
+  <li>The second is that \(\nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}\) must be optimized with the mean squared error with respect to \(\nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}\).</li>
+</ul>
+
+<p>Since a function approximator does not estimate the Q value, this is not really the value-based method, but rather a unique method that the DPG has. The objective of the gradient of the Q value can be expressed as:</p>
+
+\[\begin{align}
+    \nabla_{ \phi } \mathcal{J} ( \phi )
+    = &amp; \nabla_{ \phi } \mathbb{E}_{ s \sim d^{\mu_{\theta}}} \left[ \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right)^{2} \right]
+    = \nabla_{ \phi } \varepsilon = 0
+    \\
+    = &amp; \nabla_{ \phi } \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right)^{2} \text{ d}s
+    \\
+    = &amp; \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \cdot 2 \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right) \nabla_{ \phi } \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    \\
+    \propto &amp; \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right) \nabla_{ \phi } \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+    \\
+    &amp; \begin{aligned}
+        \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad
+        \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} = \nabla_{ \theta} \mu_{\theta} ( s ) \cdot \phi
+    \end{aligned}
+    \\
+    = &amp; \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \left(
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+    \right) \nabla_{ \theta} \mu_{\theta} ( s ) \text{ d}s
+    \\
+    = &amp; \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s ) \text{ d}s
+    - \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s ) \text{ d}s
+\end{align}\]
+
+<p>This means,</p>
+
+\[\begin{align}
+    \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s ) \text{ d}s
+    &amp; = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s ) \text{ d}s
+    \\
+    \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+    \right]
+    &amp; = \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+    \right]
+\end{align}\]
+
+<p>Therefore, 1) if \(\nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} = \nabla_{ \theta} \mu_{\theta} ( s ) \cdot \phi\) holds and 2) if the function approximation of \(\nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}\) is optimized with the mean squared error with \(\nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}\), we can set the objective function as:</p>
+
+\[\begin{equation}
+    \nabla_{ \theta } \mathcal{J} (\theta)
+    \propto \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+    \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+    \right]
+    \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+    \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+    \right]
+\end{equation}\]
+
+<h1 id="practical-algorithm">Practical Algorithm</h1>
+
+<p>Although the PG can be practically implemented, it is often that we divide it from practical algorithms.</p>
+
+<h2 id="reinforce">REINFORCE</h2>
+
+<p>The <strong>REINFORCE</strong> is the earliest practical PG algorithm proposed from <a href="https://link.springer.com/article/10.1007/BF00992696">Simple Statistical Gradient-Following Algorithms for Connectionist Reinforcement Learning</a>. It is an on-policy stochastic PG algorithm that uses a raw return for the update per every episode.</p>
+
+<figure class="align-center" style="width: 650px">
+    <img src="/assets/machine_learning/decision_2_policy_based_reinforcement_learning/1_reinforce_pseudocode.png" />
+    <figcaption class="figure-caption text-center">
+        REINFORCE pseudocode from
+        <a href="https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf">
+            Reinforcement Learning: An Introduction
+        </a>
+    </figcaption>
+</figure>
+
+<p>Where \(G_{t}\) is the return at \(t\), so for every \(t\), compute \(G_{t}\) for the update.</p>
+
+<h2 id="actor-critic">Actor Critic</h2>
+
+<p>Since the PG uses MC, it suffers from high variance. To remedy this, the <strong>actot critic (AC)</strong> is introduced, which employs a bootstrapping strategy in the PG. The AC parameterizes both the value function and policy, and 1) update the value functions with a bootstrapping to estimate the true value functions and 2) update the policy in respect to the estimated Q value to acquire higher value functions. The name is originated from the fact that the value function critizes (<em>critic</em>) the action selection from the policy (<em>actor</em>).</p>
+
+<figure class="align-center" style="width: 650px">
+    <img src="/assets/machine_learning/decision_2_policy_based_reinforcement_learning/2_ac_pseudocode.png" />
+    <figcaption class="figure-caption text-center">
+        Actor critic pseudocode from
+        <a href="https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf">
+            Reinforcement Learning: An Introduction
+        </a>
+    </figcaption>
+</figure>
+
+<p>Where the <em>temporal difference (TD) residual</em> is used to compute \(\delta\). Unlike REINFORCE, one-step AC updates the parameters every time step.</p>
+
+<h1 id="summary">Summary</h1>
+<p>The PG is an on-policy RL algorithm that finds the optimal policy using the MC method. Unlike value-based methods, the PG parameterizes the policy with a function approximator such that maximizes the return. The PG objective function has many equivalent expressions.</p>
+
+\[\begin{align}
+    \mathcal{J} ( \theta )
+    &amp; = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } [ R ( s , a ) ]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) R ( s , a )
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } \left[ Q^{\pi_{\theta}} (s, a) \right]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a)
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}} } \left[ V^{\pi_{\theta}} (s) \right]
+    = \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s ) V^{\pi_{\theta}} (s)
+    \\
+    &amp; \equiv \mathbb{E}_{ s_{0} \sim p_{0} } \left[ V^{\pi_{\theta}} (s_{0}) \right]
+    = \sum_{s_{0} \in \mathcal{S}} p_{0} ( s_{0} ) V^{\pi_{\theta}} (s_{0})
+\end{align}\]
+
+<ul>
+  <li>
+    <p><a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 1 (Policy Gradient)</strong></a>:</p>
+
+\[\begin{equation}
+      \nabla_{\theta} \mathcal{J} ( \theta )
+      \propto
+      \sum_{s \in \mathcal{S}} d^{\pi_{\theta}} ( s )
+      \sum_{a \in \mathcal{A}} \pi_{\theta} (a \vert s) Q^{\pi_{\theta}} (s, a) \nabla_{\theta} \pi_{\theta} (a \vert s)
+      = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} }
+      \left[ Q^{\pi_{\theta}} (s, a) \nabla_{\theta} \ln \pi_{\theta} (a \vert s) \right]
+  \end{equation}\]
+  </li>
+  <li>
+    <p><a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf"><strong>Theorem 2 (Policy Gradient with Function Approximation)</strong></a>:</p>
+
+\[\begin{equation}
+      \nabla_{ \theta } \mathcal{J} (\theta)
+      \propto \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+      Q^{\pi_{\theta}} (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+      \right]
+      \equiv \mathbb{E}_{ s \sim d^{\pi_{\theta}} , a \sim \pi_{\theta} } \left[
+      Q_{ \phi } (s, a) \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+      \right]
+  \end{equation}\]
+
+    <ul>
+      <li>Where two conditions must meet.</li>
+    </ul>
+
+\[\begin{equation}
+      \nabla_{ \phi } Q_{ \phi } (s, a) = \nabla_{ \theta} \ln \pi_{\theta} (a \vert s)
+      \qquad
+      \mathcal{J} ( \phi )
+      = \mathbb{E}_{ s \sim d^{\pi_{\theta}}, a \sim \pi_{\theta} } \left[
+      \left( Q_{\phi} (s, a) - Q^{\pi_{\theta}} (s, a) \right)^{2}
+      \right]
+      \leq
+      \varepsilon
+  \end{equation}\]
+
+    <ul>
+      <li>There are two types of policy distribution that meet the two conditions.
+        <ul>
+          <li>Softmax policy distribution for discrete action space.</li>
+        </ul>
+
+\[\begin{equation}
+      \pi_{\theta} (a \vert s)
+      = \text{Softmax} ( e^{ \mathbf{x} ( s , a ) \cdot \theta } )
+      = \frac{ e^{ \mathbf{x} ( s , a ) \cdot \theta } }{ \sum_{ a' \in \mathcal{A} } e^{ \mathbf{x} ( s , a' ) \cdot \theta } }
+      \qquad
+      Q_{ \phi } (s, a)
+      = \left( \mathbf{x} ( s , a ) - \sum_{ a' \in \mathcal{A} } \mathbf{x} ( s , a' ) \pi_{\theta} (a' \vert s) \right) \cdot \phi
+  \end{equation}\]
+
+        <ul>
+          <li>Gaussian policy distribution for continuous action space.</li>
+        </ul>
+
+\[\begin{equation}
+      \pi_{\theta} (a \vert s) = \mathcal{N} ( \mu ( s , a ) , \sigma^{2} )
+      \quad
+      \mu ( s , a ) = \mathbf{x} ( s , a ) \cdot \theta
+      \qquad
+      Q_{ \phi } (s, a)
+      = \left( \mathbf{x} ( s , a ) \frac{ a - \mu ( s , a ) }{ \sigma^{2} } \right) \cdot \phi
+  \end{equation}\]
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>The DPG is just the PG with the greedy policy, developed to improve computational efficiency in continuous state and action space.</p>
+
+\[\begin{align}
+    \mathcal{J} ( \theta )
+    &amp; = \mathbb{E}_{ s \sim d^{\mu_{\theta}} } [ R ( s , \mu_{\theta} ( s ) ) ]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) R ( s , \mu_{\theta} ( s ) ) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[ Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \right]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[ V^{\mu_{\theta}} (s) \right]
+    = \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) V^{\mu_{\theta}} (s) \text{ d}s
+    \\
+    &amp; \equiv \mathbb{E}_{ s_{0} \sim p_{0} } \left[ V^{\mu_{\theta}} (s_{0}) \right]
+    = \int_{\mathcal{S}} p_{0} ( s_{0} ) V^{\mu_{\theta}} (s_{0}) \text{ d}s_{0}
+\end{align}\]
+
+<ul>
+  <li>
+    <p><a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 1 (Deterministic Policy Gradient Theorem)</strong></a>:</p>
+
+\[\begin{align}
+      \nabla_{\theta} \mathcal{J} ( \theta )
+      &amp; = \nabla_{\theta}
+      \int_{\mathcal{S}} d^{\mu_{\theta}} ( s ) Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \text{ d}s
+      = \mathbb{E}_{ s \sim d^{\mu_{\theta}} }
+      \left[ \nabla_{\theta} Q^{\mu_{\theta}} (s, \mu_{\theta} ( s )) \right]
+      \\
+      &amp; \propto \int_{\mathcal{S}} d^{\mu_{\theta}} ( s )
+      \nabla_{ \theta} \mu_{\theta} ( s )
+      \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \text{ d}s
+      = \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+      \nabla_{ \theta} \mu_{\theta} ( s )
+      \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+      \right]
+  \end{align}\]
+  </li>
+  <li>
+    <p><a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 2 (Limit of the Stochastic Policy Gradient)</strong></a>:</p>
+
+\[\begin{equation}
+      \lim_{\sigma \rightarrow 0}
+      \nabla_{\theta} \mathcal{J} ( \pi_{ \mu_{\theta}, \sigma } ) = \nabla_{\theta} \mathcal{J} ( \mu_{\theta} )
+  \end{equation}\]
+  </li>
+  <li>
+    <p><a href="http://proceedings.mlr.press/v32/silver14.pdf"><strong>Theorem 3 (Compatible Function Approximation)</strong></a>:</p>
+
+\[\begin{equation}
+      \nabla_{ \theta } \mathcal{J} (\theta)
+      \propto \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+      \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+      \right]
+      \equiv \mathbb{E}_{ s \sim d^{\mu_{\theta}} } \left[
+      \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} \nabla_{ \theta} \mu_{\theta} ( s )
+      \right]
+  \end{equation}\]
+
+    <ul>
+      <li>Where two conditions must meet.</li>
+    </ul>
+
+\[\begin{equation}
+      \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )} = \nabla_{ \theta} \mu_{\theta} ( s ) \cdot \phi
+      \qquad
+      \mathcal{J} ( \phi )
+      = \mathbb{E}_{ s \sim d^{\mu_{\theta}}} \left[ \left(
+      \nabla_{ a } Q_{\phi} (s, a) \vert_{a = \mu_{\theta} ( s )}
+      - \nabla_{ a } Q^{\mu_{\theta}} (s, a) \vert_{a = \mu_{\theta} ( s )}
+      \right)^{2} \right]
+      \leq
+      \varepsilon
+  \end{equation}\]
+  </li>
+</ul>
+
+<p>Three popular model-based algorithms are:</p>
+<ul>
+  <li>The QL:
+    <ol>
+      <li>parameterizes the value function.</li>
+      <li>naturally encapsulates the deterministic policy.</li>
+      <li>handles the MDP with only the discrete state/action space.</li>
+      <li>updates per step using a bootstrapping.</li>
+      <li>has relatively low variance, so it converges fast.</li>
+      <li>has relatively high bias, so it may be more likely to fall into local optima.
+        <ul>
+          <li>has initialization bias, so the initialization influences the final performance.</li>
+          <li>has overestimation bias, so it takes a risky path.</li>
+        </ul>
+      </li>
+      <li>is naturally off-policy, so it has better exploration.</li>
+    </ol>
+  </li>
+  <li>The PG:
+    <ol>
+      <li>parameterizes the policy.</li>
+      <li>naturally encapsulates the stochastic policy.</li>
+      <li>handles the MDP with both the discrete and continuous state/action space.</li>
+      <li>updates per episode.</li>
+      <li>has relatively high variance, so it converges slow.</li>
+      <li>has relatively low bias, so it may be less likely to fall into local optima.</li>
+      <li>is naturally on-policy, but off-policy can be employed with the importance sampling.</li>
+    </ol>
+  </li>
+  <li>The AC:
+    <ol>
+      <li>parameterizes the value function and the policy.</li>
+      <li>naturally encapsulates the stochastic policy.</li>
+      <li>handles the MDP with both the discrete and continuous state/action space.</li>
+      <li>updates per step using a bootstrapping.</li>
+      <li>has relatively low variance, so it converges fast.</li>
+      <li>has relatively low bias, so it may be less likely to fall into local optima.</li>
+      <li>is naturally on-policy, but off-policy can be employed with the importance sampling.</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://papers.nips.cc/paper/1999/hash/464d828b85b0bed98e80ade0a5c43b0f-Abstract.html">Policy Gradient Methods for Reinforcement Learning with Function Approximation</a></li>
+  <li><a href="http://proceedings.mlr.press/v32/silver14">Deterministic Policy Gradient Algorithms</a></li>
+  <li>Chapter 13 in
+<a href="https://www.andrew.cmu.edu/course/10-703/textbook/BartoSutton.pdf">Reinforcement Learning: An Introduction</a></li>
+</ul>
+
+<p>Other helpful resources are:</p>
+<ul>
+  <li><a href="https://lilianweng.github.io/posts/2018-04-08-policy-gradient/">Policy Gradient Algorithms</a></li>
+  <li><a href="https://danieltakeshi.github.io/2017/03/28/going-deeper-into-reinforcement-learning-fundamentals-of-policy-gradients/">Going Deeper Into Reinforcement Learning: Fundamentals of Policy Gradients</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#machine-learning-x003a-decision" class="page__taxonomy-item" rel="tag">Machine Learning&#x003a; Decision</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-15">April 15, 2023</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Policy-based+Reinforcement+Learning%20http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmachine_learning%2Fdecision_2_policy_based_reinforcement_learning%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmachine_learning%2Fdecision_2_policy_based_reinforcement_learning%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fmachine_learning%2Fdecision_2_policy_based_reinforcement_learning%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/posts/machine_learning/decision_1_value_based_reinforcement_learning/" class="pagination--pager" title="Value-based Reinforcement Learning
+">Previous</a>
+    
+    
+      <a href="/posts/mathematics/markov_model_1_markov_chain/" class="pagination--pager" title="Markov Chain
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/neuroscience/spinal_cord_brain_and_nervous_system/" rel="permalink">Spinal Cord, Brain and Nervous System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          21 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the field of neuroscience, there are specific biological components that play unique roles. The brain serves as the primary organ for processing informati...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/neuroscience/neuron_and_neural_tissue/" rel="permalink">Neuron and Neural Tissue
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          24 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the field of neuroscience, there are specific biological components that play unique roles. A neuron acts as an electrical device that sends a signal by i...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/mathematics/markov_model_2_markov_decision_process/" rel="permalink">Markov Decision Process
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          33 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A Markov decision process is a type of Markov models used in decision making problems, which describes the world with a controllable system. It is used to mo...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/mathematics/markov_model_1_markov_chain/" rel="permalink">Markov Chain
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          35 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A Markov chain is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recogniti...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Kel'Logg. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/posts/machine_learning/decision_2_policy_based_reinforcement_learning/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/posts/machine_learning/decision_2_policy_based_reinforcement_learning"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kellogg-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+<!-- mathjax -->
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+
+  </body>
+</html>

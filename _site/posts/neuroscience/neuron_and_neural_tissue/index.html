@@ -1,0 +1,1240 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Neuron and Neural Tissue - Kel’Logg</title>
+<meta name="description" content="In the field of neuroscience, there are specific biological components that play unique roles. A neuron acts as an electrical device that sends a signal by inlet and outlet of charged ions through ion channels on the membrane. Together with neuroglia, they make up neural tissues that transfer information or process information. This post aims to provide a tutorial on the two lower levels of body organization in neuroscience, namely the cell level and the tissue level.">
+
+
+  <meta name="author" content="D. K. Ryu">
+  
+  <meta property="article:author" content="D. K. Ryu">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kel'Logg">
+<meta property="og:title" content="Neuron and Neural Tissue">
+<meta property="og:url" content="http://localhost:4000/posts/neuroscience/neuron_and_neural_tissue/">
+
+
+  <meta property="og:description" content="In the field of neuroscience, there are specific biological components that play unique roles. A neuron acts as an electrical device that sends a signal by inlet and outlet of charged ions through ion channels on the membrane. Together with neuroglia, they make up neural tissues that transfer information or process information. This post aims to provide a tutorial on the two lower levels of body organization in neuroscience, namely the cell level and the tissue level.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-04-10T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2023-04-15T00:00:00+09:00">
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/posts/neuroscience/neuron_and_neural_tissue/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kel'Logg Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Kel'Logg
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/posts/">Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/mathematics/">Mathematics</a>
+            </li><li class="masthead__menu-item">
+              <a href="/neuroscience/">Neuroscience</a>
+            </li><li class="masthead__menu-item">
+              <a href="/machine_learning/">Machine Learning</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/bio-photo.jpg" alt="D. K. Ryu" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">D. K. Ryu</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Ph.D. candidate in reinforcement learning and natural language processing</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="www.linkedin.com/in/dkryu" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/ktr0921" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:dongwon.ryu@monash.edu" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Neuron and Neural Tissue">
+    <meta itemprop="description" content="In the field of neuroscience, there are specific biological components that play unique roles. A neuron acts as an electrical device that sends a signal by inlet and outlet of charged ions through ion channels on the membrane. Together with neuroglia, they make up neural tissues that transfer information or process information. This post aims to provide a tutorial on the two lower levels of body organization in neuroscience, namely the cell level and the tissue level.">
+    <meta itemprop="datePublished" content="2023-04-10T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2023-04-15T00:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Neuron and Neural Tissue
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          24 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Table of Contents</h4></header>
+              <ul class="toc__menu"><li><a href="#neuron">Neuron</a><ul><li><a href="#neuron-type">Neuron Type</a></li><li><a href="#neurotransmission">Neurotransmission</a></li><li><a href="#action-potential-propagation">Action Potential Propagation</a></li></ul></li><li><a href="#nerve-fibre">Nerve Fibre</a><ul><li><a href="#afferent-nerve-fibre">Afferent Nerve Fibre</a></li><li><a href="#efferent-nerve-fibre">Efferent Nerve Fibre</a></li></ul></li><li><a href="#neural-tissue">Neural Tissue</a><ul><li><a href="#neuroglia">Neuroglia</a></li><li><a href="#nerve">Nerve</a></li><li><a href="#ganglion">Ganglion</a></li></ul></li><li><a href="#summary">Summary</a><ul><li><a href="#overview-of-somatic-process">Overview of Somatic Process</a></li><li><a href="#reference">Reference</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <blockquote>
+    Perception is reality.
+    <br />
+    <cite>Lee Atwater</cite>
+</blockquote>
+
+<p>Perception is <em>not true reality</em>, but at least, it is <em>our reality</em>. We have no mean to apprehend the true reality, but only to merely estimate the reality from the observation in a limited and distorted way using <em>our brain</em>.</p>
+
+<p><strong>Neuroscience</strong> is the study of the human brain and nervous system, which includes 1) sensing the world, 2) feeling the emotion, 3) forming the memory, 4) processing the logic, and 5) moving the muscle. It is said that if the body is the hardware, the nervous system is the software. Neuroscience combines knowledge from various disciplines to explore the complexity of the human brain and nervous system.</p>
+
+<p>In the field of neuroscience, there are specific biological components that play unique roles. Neurons are specialized cells dedicated to transmitting and processing information. They form neural tissues, which operate collectively to manage information. These tissues assemble to manage information in clusters and contribute to the formation of the spinal cord and brain, which serve as specialized organs in the nervous system.</p>
+
+<table class="table-centering">
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 150px"> <b>Cell</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 500px">
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Neuron</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Neuroglia</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 150px"> <b>Tissue</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 500px">
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Nerve</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Ganglion</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">White Matter</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Gray Matter</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 150px"> <b>Organ</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 500px">
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Peripheral Nerve</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Brain</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Spinal Cord</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; vertical-align: middle; width: 150px"> <b>Organ System</b> </td>
+        <td style="text-align: center; vertical-align: middle; width: 500px">
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Peripheral Nervous System</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Central Nervous System</a>,
+            <br />
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Somatic Nervous System</a>,
+            <a href="/posts/neuroscience/neuron_and_neural_tissue">Autonomic Nervous System</a>
+        </td>
+    </tr>
+</table>
+
+<p>A neuron acts as an electrical device that sends a signal by inlet and outlet of charged ions through ion channels on the membrane. Together with neuroglia, they make up neural tissues that transfer information or process information. This post aims to provide a tutorial on the two lower levels of body organization in neuroscience, namely the cell level and the tissue level.</p>
+
+<h1 id="neuron">Neuron</h1>
+
+<p>A <strong>neuron</strong>, or nerve cell or neuronal cell or neurocyte, is the fundamental unit of the nervous system, responsible for sending and receiving electrochemical signals to interact with the world. It is the smallest component that is responsible for everything that involves perception, cognition and consciousness.</p>
+
+<figure class="align-center" style="width: 400px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/1_1_neuron.png" />
+    <figcaption class="figure-caption text-center">
+        A neuron from
+        <a href="https://commons.wikimedia.org/wiki/File:Neuron.svg">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<p>A neuron is structurally unique.</p>
+<ul>
+  <li><strong>Dendrite</strong> is a tree branch-like shape filament that receives input signals from other neurons. Usually, it outreaches from the <em>cell body</em>. which contains <em>nucleus</em> in its centre.</li>
+  <li><strong>Axon</strong>, or <strong>nerve fibre</strong> is a long tube-like shape filament that passes the received signals from dendrites to the other end. It is one of the commonly damanged parts, since it is approximately 50 times thinner than hair.</li>
+  <li><strong>Myelin sheath</strong>, or <strong>myelination</strong>, is a lipid-rich material of <em>neuroglia</em>, such as <em>Schewan cell</em>, that wraps the axon to protect it from physical trauma. <strong>Node of Ranvier</strong> is the gap between myelin sheaths. Myelin sheath is not part of neuron and is not found in every neuron.</li>
+  <li><strong>Axon terminal</strong> is a splitted axon at the other end that sends the passed signals to other neurons.</li>
+</ul>
+
+<p>A neuron is also functionally unique.</p>
+<ul>
+  <li><strong>Neurotransmission</strong>: The chemical signal between axon terminal of one neuron and dendrite of another neuron.</li>
+  <li><strong>Action potential propagation</strong>: The electrical signal through axon from dendrite to axon termianl within the neuron.</li>
+</ul>
+
+<p>In this section, I will briefly introduce the types of neurons, then, focus on the two core functions of neurons, neurotransmission and action potential propagation.</p>
+
+<h2 id="neuron-type">Neuron Type</h2>
+<p>There are many different ways to differentiate neurons. Morphologically, four types of neuron exist.</p>
+<ul>
+  <li><strong>Unipolar</strong>: One axon extending from the cell body to dendrites.</li>
+  <li><strong>Bipolar</strong>: Two axons extending from the cell body to dendrites and axon terminals separately.</li>
+  <li><strong>Multipolar</strong>: Dendrites on the cell body and one axon extending from the cell body to axon terminals.</li>
+  <li><strong>Pseudounipolar</strong>: One axon extending from the cell body splited into two branches in different lengths, one for dendrites and the other for axon terminals.</li>
+</ul>
+
+<figure class="align-center" style="width: 300px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/1_2_neuron_type.png" />
+    <figcaption class="figure-caption text-center">
+        A neuron type from
+        <a href="https://commons.wikimedia.org/wiki/File:Neurons_uni_bi_multi_pseudouni.svg">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<p>Unipolar neuron is only present in invertebrates, such as insects, so humans only have neurons of bipolar, multipolar and pseudopolar. Multipolar neuron has two variants in human.</p>
+<ul>
+  <li><strong>Pyramidal</strong>: Multipolar with dendrites in pyramidal shape for excitatory neurotransmitter.</li>
+  <li><strong>Purkinje</strong>: Multipolar with dendrites in planar fan-shaped for inhibitory neurotransmitter.</li>
+</ul>
+
+<p>The morphology of neurons usually follows its functionality. There are three functional classes of neuron.</p>
+<ul>
+  <li><strong>Sensory neuron</strong>: Passes the sensation signal from the external world to the brain. Most are bipolar or pseudounipolar.</li>
+  <li><strong>Interneuron</strong>: Connects sensory neurons, interneurons and/or motor neurons, forming circuits of various complexity. Most are multipolar, pyramidal, or Purkinje.</li>
+  <li><strong>Motor neuron</strong>: Passes the innervation signal from the brain to muscles and glands. Most are also multipolar.</li>
+</ul>
+
+<p>The functional types of neurons vary drastically by the location.</p>
+<ul>
+  <li>Neurons found in the peripheral nervous system (PNS) are generally sensory neurons or motor neurons.
+    <ul>
+      <li>Sensory neuron branches out towards the sensory organs (long) and the CNS (short) separately.</li>
+    </ul>
+  </li>
+  <li>Neurons found in the central nervous system (CNS) are generally interneurons.
+    <ul>
+      <li>There are extensive number of neuron types in the brain, distinguished by neurotransmitter type, structure, synapse location, electrical properties, gene expressions, projection patterns and many more. Due to this, yet community has not come to an agreement on how to distinguish them.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Thus, the process can be thought of as:</p>
+<ol>
+  <li>Receive the sensation signal through sensory neurons in the PNS.</li>
+  <li>Process the information through interneurons in the CNS.</li>
+  <li>Convey the innervation signal through motor neurons in the PNS.</li>
+</ol>
+
+<p>Of course, there are neurons in the brain, involved in sensation, i.e. visual cortex or auditory cortex, or in movement, i.e. motor cortex, but they are composed of interneurons. Sensory neurons and motor neurons are usually present in the PNS to deliver signals between the body and the CNS. Most of the processing is done with interneurons in the CNS.</p>
+
+<h2 id="neurotransmission">Neurotransmission</h2>
+
+<p>A <strong>neurotransmission</strong> is the chemical process that a neuron communicates with another neuron. The process involves two neurons, releasing and receiving signalling molecules, called <strong>neurotransmitters</strong>, at the junction between two neurons, called <strong>synapse</strong>. The two neurons are named based on whether to release or receive neurotransmitters, or <em>the direction of the signal</em>.</p>
+<ul>
+  <li><strong>Presynaptic neuron</strong>: The neuron that sends the neurotransmitters from the axon terminal.</li>
+  <li><strong>Postsynaptic neuron</strong>: The neuron that receives the neurotransmitters at the dendrite.</li>
+</ul>
+
+<p>A neurotransmitter has two opposite roles, either <em>excite (initiate)</em> or <em>inhibit (hinder)</em> the activation of an action potential propagation in the postsynaptic neuron.</p>
+<ul>
+  <li>Excitatory neurotransmitter: <strong>Glutamate</strong>, noradrenaline and histamine.</li>
+  <li>Inhibitory neurotransmitter: <strong>Gamma-aminobutyric acid (GABA)</strong>, serotonin and glycine.</li>
+  <li>Excitatory and inhibitory neurotransmitter: Acetylcholine and dopamine.
+    <ul>
+      <li>Acetylcholine is excitatory to contract skeletal muscles while inhibitory to slow the heart rate.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Glutamate and GABA predominate the neurotransmitters in the brain, 80\% ~ 90\% and 30\% ~ 40\% synapses, respectively. Note that a neuron may have more than one neurotransmitter types, so most of neurons with glutamate also carry other neurotransmitters in the brain.</p>
+<ul>
+  <li>Glutamate helps learning and memory whereas GABA produces a calming effect.</li>
+  <li>Glutamate is the metabolic precursor of GABA, where glutamate is decarboxylated to GABA and CO2. Which means GABA is produced from glutamate.</li>
+  <li>Since GABA is for calming effects, some people take GABA for anxiety relief or ADHD.</li>
+  <li>Excessive glutamate is known to cause overexcitement of neurons and may result in the death of neurons, or neuroapoptosis. This phenomenon is called <strong>excitotoxicity</strong>.</li>
+</ul>
+
+<p>It is very important to balance excitatory and inhibitory neurotransmitters. In a cell level, it determines whether an action potential will result or not, and in an organ level, excess or lack of one may result in neurological or mental diseases.</p>
+
+<p>The full process of a neurotransmission is:</p>
+
+<figure class="align-center" style="width: 400px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/1_3_neurotransmission.png" />
+    <figcaption class="figure-caption text-center">
+        A neurotransmission from
+        <a href="https://commons.wikimedia.org/wiki/File:SynapseSchematic_en.svg">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ol>
+  <li>Action potential travels through presynaptic neuron and reaches the axon terminal of the postsynaptic neuron.</li>
+  <li>Action potential at the axon terminal opens voltage-gated Ca<sup>2+</sup> channels, allowing Ca<sup>2+</sup> influx to the axon terminal.</li>
+  <li>Neurotransmitters are released from the axon terminals of the presynaptic neuron into the synaptic cleft.</li>
+  <li>Neurotransmitter binds to neurotransmitter receptors on the dendrites of the postsynaptic neuron.</li>
+  <li>This binding opens ion channels, positive (e.g. Na<sup>+</sup>, K<sup>+</sup>, Ca<sup>2+</sup>) or negative (e.g. Cl<sup>-</sup>) depending on the neurotransmitter type, allowing ion influx to the membrane of postsynaptic neuron.</li>
+  <li>Neurotransmitters attached to the dentrites of the postsynaptic neuron are detached and collected through neurotransmitter transporters.</li>
+</ol>
+
+<p>Few details are,</p>
+<ul>
+  <li>(3) Synaptic cleft is a 20nm ~ 40nm gap between the presynaptic axon terminal and the postsynaptic dendrite. Synapse includes all the presynaptic axon terminal, the synaptic cleft and the postsynaptic dendrite.</li>
+  <li>(4, 5) Neurotransmitters are not the ones that travel into postsynaptic neurons, but ions are.</li>
+  <li>(8) Neurotransmitter transporters are responsible for maintaining appropriate levels of neurotransmitters inside and outside neurons.</li>
+</ul>
+
+<p>A neurotransmission occurs between other cells in muscles and glands. In the case of muscle, it is called <em>neuromuscular transmission</em>, covered in the later section.</p>
+
+<h2 id="action-potential-propagation">Action Potential Propagation</h2>
+
+<p>An <strong>action potential propagation</strong> is the electrical process that a signal is propagated within a single neuron from dendrites to axon terminals. The process involves the changes of electric potentials inside the membrane, called <strong>action potential</strong>, or nerve impulse or spike.</p>
+
+<p>The full process of an action potential propagation is:</p>
+
+<figure class="align-center" style="width: 750px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/1_4_action_potential_propagation.png" />
+    <figcaption class="figure-caption text-center">
+        An action potential propagation from
+        <a href="https://commons.wikimedia.org/wiki/File:Membrane_Permeability_of_a_Neuron_During_an_Action_Potential.svg">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ol>
+  <li>Membrane potential stays at the <strong>resting membrane potential</strong>. There is lower concentration of Na<sup>+</sup> (a) and higher concentration of K<sup>+</sup> inside the axon.</li>
+  <li>During neurotransmission, if more excitatory neurotransmitters than inhibitory neurotransmitters bind to the dendrites, the positive ions enter the membrane of the neuron, increasing the membrane potential.</li>
+  <li>If the membrane potential rises to the <strong>action potential threshold</strong>, the action potential propagation initiates. In other words, neuron fires.</li>
+  <li>An increased membrane potential activates voltage-gated Na<sup>+</sup> channels (c) to inlet Na<sup>+</sup> into the axon, increasing membrane potentials further, called <strong>depolarization</strong>.</li>
+  <li>Na<sup>+</sup> influx activates voltage-gated K<sup>+</sup> channels (d) to outlet K<sup>+</sup> out of the axon, decreasing membrane potentials, called <strong>repolarization</strong>.</li>
+  <li>The outlet of K<sup>+</sup> is more excessive than the inlet of Na<sup>+</sup>, causing undershoot of the membran potential to drop below the resting membrane potential, called <strong>hyperpolarization</strong>.</li>
+  <li>The resting potential is ultimately re-established by closing of all voltage-gated ion channels and the activitation of the Na<sup>+</sup>/K<sup>+</sup> pump (e). This is called <strong>refractory period</strong>.</li>
+  <li>(4,5,6,7) occur consecutively through the axon until the axon terminal.</li>
+</ol>
+
+<p>Few details are,</p>
+<ul>
+  <li>(1, 3) Membrane potential is the difference in electrical potential between inside and outside of a cell. The resting membrane potential and action potential threshold are usually -70 mV and -55 mV, but they vary drastically by neuron types.</li>
+  <li>(2) During neurotransmission, if more inhibitory neurotransmitters than excitatory neurotransmitters bind to the dendrites, the membrane potential decreases, and thus no action potential.</li>
+  <li>(3) If the membrane potential does not rise to the action potential threshold, no action potential propagation is initiated.</li>
+  <li>(6) Hyperpolarization is known to prevent action potential to travel backwards.</li>
+  <li>(4,5,6) are the process of action potential propagation.</li>
+</ul>
+
+<p>Through action potential propagation, a neuron consecutively opens and closes electrically activated ion channels to pass electrical impulse from dendrites to axon terminals. Then, at the end of axon terminals, a neurotransmission occurs with a postsynaptic neuron. In the postsynaptic neuron, the sum total of dendritic inputs, excitatory as positive charges and inhibitory as negative charges, determines whether the neuron will fire an action potential.</p>
+
+<p>Myelin sheath is a lipid-rich fatty substance of neuroglia that encases axons. It is very important in action potential propagation as it increases the rate of action potential propagation. This phenomenon is referred to as <strong>saltatory conduction</strong>.</p>
+
+<p>The exchanges of ions can only occur at unmyelinated part of axon, so the increase in the conduction velocity of action potential propagation is because the action potential is <em>skipped</em> at myelinated areas. Due to this myelin sheaths are often seen as an insulator for action potential propagation.</p>
+
+<figure class="align-center" style="width: 350px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/1_5_saltatory_conduction.gif" />
+    <figcaption class="figure-caption text-center">
+        Saltatory conduction from
+        <a href="https://commons.wikimedia.org/wiki/File:Saltatory_Conduction.gif">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<h1 id="nerve-fibre">Nerve Fibre</h1>
+<p>A <strong>nerve fibre</strong> is another name for an <em>axon</em> that is commonly used to classify a neuron serving a particular function. This can be considered as a subdivision of sensory neurons and motor neurons. Here, the naming convention is based on the direction of the information flow, that is sensory neurons as <em>afferent neurons</em> and motor neurons as <em>efferent neurons</em>.</p>
+
+<p>There are three subdivisions that exist in nerve fibre.</p>
+<ul>
+  <li>Location: A nerve fibre can be <strong>general</strong> or <strong>special</strong>. The former refers to a nerve fibre branching out from the spinal cord in the CNS and the latter from the brain in the CNS.</li>
+  <li>Function: A nerve fibre can be <strong>somatic</strong> or <strong>autonomic</strong>. Somatic refers to as <em>voluntary</em> and autonomic as <em>involuntary</em>. Visceral is another name for autonomic. Therefore, somatic nerve fibre is for voluntary system while visceral nerve fibre is for involuntary system.</li>
+  <li>Direction: A nerve fibre can be <strong>afferent</strong> or <strong>efferent</strong>. Afferent is to bring sensations to CNS and efferent is to send commands from CNS. Afferent is derived from the Latin <em>afferre</em> that means <em>to bring towards</em> and efferent is from the Latin <em>efferre</em>, <em>to bring away from</em>.</li>
+</ul>
+
+<p>A nerve fibre is named with a combination of these three subdivisions, such as <em>general somatic afferent nerve fibre</em> or <em>special visceral efferent nerve fibre</em>. This naming convention is used to describe neural tissues while morphological and functional classifications are used more on neurons.</p>
+
+<p>Herein, I will mainly focus on the general function and idea on afferent nerve fibre and efferent nerve fibre. Note that although there exist neurons that send and receive signals in the CNS, this content is mainly on the PNS.</p>
+
+<h2 id="afferent-nerve-fibre">Afferent Nerve Fibre</h2>
+
+<p>An <strong>afferent nerve fibre</strong> is an axon of <strong>afferent neuron</strong>, or sensory neuron, that brings the sensation signals from the body to the CNS. There are four types of afferent nerve fibres.</p>
+<ul>
+  <li><strong>General somatic afferent (GSA) nerve fibre</strong>: Carry pain, touch or temperature from the skins, muscles, tendons or joints to the CNS through the spinal nerve.</li>
+  <li><strong>General visceral afferent (GVA) nerve fibre</strong>: Carry pain or physiological sensation from the internal organs, glands or blood vessels to the CNS through the spinal nerve.</li>
+  <li><strong>Special somatic afferent (SSA) nerve fibre</strong>: Carry vision, hearing or balance from the eyes, ears or body to the CNS through cranial nerve.</li>
+  <li><strong>Special visceral afferent (SVA) nerve fibre</strong>: Carry smell or taste from the nose or tongue to the CNS through cranial nerve.</li>
+</ul>
+
+<p>An sensory neuron is a neuron that is activated by sensory input from the environment or within the body. There are largely two sensations in the human body.</p>
+<ul>
+  <li><strong>Exteroception</strong>: Sensation from outside the body.</li>
+  <li><strong>Interoception</strong>: Sensation from inside the body.</li>
+</ul>
+
+<p>The action potential propagation of an sensory neuron is initiated by four types of sensations of different stimuli.</p>
+<ul>
+  <li><strong>Chemosensation</strong>: Induced by <strong>chemoreceptor</strong> that detects chemical molecule.</li>
+  <li><strong>Mechanosensation</strong>: Induced by <strong>mechanoreceptor</strong> that detects mechanical force.</li>
+  <li><strong>Thermalsensation</strong>: Induced by <strong>thermoreceptor</strong> that detects thermal excitation.</li>
+  <li><strong>Photosensation</strong>: Induced by <strong>photoreceptor</strong> that detects photoexcitation.</li>
+</ul>
+
+<p>The stimuli open ion channels and depolarize membrane potentials to initiate action potential propagation. Exteroception and interoception contain the sensations of different stimuli.</p>
+<ul>
+  <li>Exteroception
+    <ul>
+      <li>Chemosensation for smell and taste.</li>
+      <li>Mechanosensation for touch and hearing.</li>
+      <li>Thermalsensation for heat and chill.</li>
+      <li>Photosensation for sight.</li>
+      <li>Chemosensation, mechanosensation and thermalsensation for pain.</li>
+    </ul>
+  </li>
+  <li>Interoception
+    <ul>
+      <li>Chemosensation for blood sugar level.</li>
+      <li>Mechanosensation for blood pressure and body position.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Exteroception covers the majority of conscious sensations we use to perceive the world. Interoception, on the other hand, covers both conscious and non-conscious sensations that are important to physiology. Due to this, major research on sensations is driven by exteroception, and only recently, researchers started focusing on interoception, such as the intersection with immune system or gastrointestinal system. Thus, interoception is still quite gray area.</p>
+<ul>
+  <li>Some literature puts the sense of body position as different sensation from exteroception and interoception, but here, I included in interoception.</li>
+</ul>
+
+<h2 id="efferent-nerve-fibre">Efferent Nerve Fibre</h2>
+
+<p>An <strong>efferent nerve fibre</strong> is an axon of <strong>efferent neuron</strong>, or motor neuron, that sends the innervation signals from the CNS to the body. There are three types of efferent nerve fibres.</p>
+<ul>
+  <li><strong>General somatic efferent (GSE) nerve fibre</strong>: Carry motor innervation from the spinal cord to skeletal muscles through the spinal nerve.</li>
+  <li><strong>General visceral efferent (GVE) nerve fibre</strong>: Carry motor innervation from the spinal cord to smooth muscles, cardiac muscles or glands through the spinal nerve.</li>
+  <li><strong>Special visceral efferent (SVE) nerve fibre</strong>: Carry motor innervation from the brain to the muscles of the pharyngeal arches, which include head, neck and tongue through the cranial nerve.</li>
+</ul>
+
+<p>There is no special somatic efferent nerve fibre, instead, SVE nerve fibre takes care of both somatic and visceral functions. Due to this, the neuron of SVE nerve fibre is often referred to as <strong>branchial motor neuron</strong>.</p>
+
+<p>An motor neuron is a neuron that is activated by innervation output from the CNS. It can be divided based on the location or function.</p>
+<ul>
+  <li>Location: An <strong>upper motor neuron</strong> is between the brain and the spinal cord while a <strong>lower motor neuron</strong> is between the spinal cord to muscles or glands.</li>
+  <li>Function: A <strong>somatic motor neuron</strong> is to control skeletal muscle while a <strong>visceral motor neuron</strong> is for smooth muscle, cardiac muscle and glands.</li>
+</ul>
+
+<p>Upper motor neurons are of the CNS, so GSE, GVE and SVE nerve fibres are part of lower motor neurons.</p>
+
+<p>Muscle contraction is the main function of GSE fibres. They activate skeletal muscles through a process called <strong>neuromuscular transmission</strong>.</p>
+
+<figure class="align-center" style="width: 700px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/2_1_neuromuscular_junction.png" />
+    <figcaption class="figure-caption text-center">
+        A neuromuscular junction from
+        <a href="https://commons.wikimedia.org/wiki/File:The_Muscle_Contraction_Process.png">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ol>
+  <li>Action potential travels through motor neuron (A) and reaches the axon terminal of the motor neuron (B).</li>
+  <li>Depolarization at the axon terminal opens voltage-gated Ca<sup>2+</sup> channels, allowing Ca<sup>2+</sup> influx to the axon terminal.</li>
+  <li>Neurotransmitters, mostly acetylcholine (ACh), are released from the axon terminals of the motor neuron into the <strong>neuromuscular junction</strong>, or myoneural junction (C). This process is referred to as <strong>exocytosis</strong>.</li>
+  <li>ACh binds to post-synaptic receptors on the membrane of the muscle cell, or sarcolemma (D).</li>
+  <li>This binding opens Na<sup>+</sup> channels, allowing Na<sup>+</sup> influx to the membrane of muscle cell.</li>
+  <li>An increase in Na<sup>+</sup> generates the action potential propagation in the muscle cell, resulting in muscle contraction via myofibril (E).</li>
+  <li>Neurotransmitters attached to the membrane of the muscle cell are detached and collected through neurotransmitter transporters.</li>
+</ol>
+
+<p>Few details are,</p>
+<ul>
+  <li>(3) ACh is excitatory to contracts the skeletal muscles but inhibitory and excitatory for involuntary systems. It contracts smooth muscles (excitation) while slowing the heart rate (inhibition).</li>
+  <li>(6) Depolarization triggers the release of Ca<sup>2+</sup>. Then, it binds to troponin to initiate contraction, which is sustained by ATP. As long as Ca<sup>2+</sup> remains bound to troponin and ATP is available, the contraction is maintained.</li>
+</ul>
+
+<p>Relaxation is opposite to contraction, where either no more AChs produced from motor neurons or ATPs run out. Although this process is specific to somatic motor neuron stimulating skeletal muscle, the logic can be generally applies to others, such as visceral motor neuron stimulating glands.</p>
+
+<h1 id="neural-tissue">Neural Tissue</h1>
+<p>A <strong>neural tissue</strong>, or nervous tissue, is a group of cells working together to perform a function in the nervous system. A neuron alone is nothing more than a cell, but a collection of neurons with neuroglia serves a purpose. Again, similar to neurons, neural tissues found in the PNS and the CNS are different.</p>
+
+<p>There are two types of neural tissues in the PNS of the human.</p>
+<ul>
+  <li><strong>Nerve</strong>: An enclosed bundle of axons, or nerve fibers. Action potentials are transmitted as a bundle to muscles, glands or CNS.</li>
+  <li><strong>Ganglion</strong>: A cluster of dendrites, neuronal cell bodies, axon terminals and neuroglia. Neurotransmission occurs between a lot of neurons, exciting or inhibiting the activation of action potential propagation.</li>
+</ul>
+
+<p>A nerve usually contains a mixture of different nerve fibres while a ganglion contains neurons of a particular function.</p>
+
+<p>In the CNS, neural tissues share similar characteristics to nerve and ganglion.</p>
+<ul>
+  <li><strong>White Matter</strong>: Nerve in CNS, but action potentials are transmitted between the various grey matter, and between the gray matter and the rest of the body along with myelination of oligodendrocytes. Myelin sheath is what makes white matter white.</li>
+  <li><strong>Grey Matter</strong>: Ganglion in CNS. Grey matter is actually more pink-coloured than grey because of the abundant blood supply.</li>
+</ul>
+
+<p>White matter is where the information is transferred while grey matter is where the information is processed. Their structures and functions can be somewhat generalized as nerve and ganglion, but in details, they vary drastically by location.</p>
+
+<p>This section mostly focuses on the neural tissues in the PNS. Thus, I will cover basics of neuroglia, then introduce nerve and ganglion.</p>
+
+<h2 id="neuroglia">Neuroglia</h2>
+
+<p><strong>Neuroglia</strong>, or glia or glial cell, is a cell that provides support for neurons. Their functions vary by a cell type, from metabolic to physiological function. Largely, there are six types of neuroglia.</p>
+
+<figure class="align-center" style="width: 500px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/3_1_neuroglia_type.png" />
+    <figcaption class="figure-caption text-center">
+        A neuroglia type from
+        <a href="https://commons.wikimedia.org/wiki/File:Blausen_0870_TypesofNeuroglia.png">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ul>
+  <li><strong>Ependymal cell</strong>: Surface for neural tissues in the CNS.</li>
+  <li><strong>Astrocyte</strong>: Metabolism in the CNS.</li>
+  <li><strong>Oligodendrocyte</strong>: Myelination in the CNS.</li>
+  <li><strong>Microglia</strong>: Immune system in the CNS.</li>
+  <li><strong>Satellite cell</strong>: Metabolism in the PNS.</li>
+  <li><strong>Schwann cell</strong>: Myelination in the PNS.</li>
+</ul>
+
+<p>Although neuroglia appear to be less important than neurons, they are believed to contribute in learning and memory.</p>
+
+<p>Neurons and neuroglia make up <strong>extracellular matrix</strong> with a composition of proteins.</p>
+
+<figure class="align-center" style="width: 400px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/3_2_neuroglia_type_brain.png" />
+    <figcaption class="figure-caption text-center">
+        An extracellular matrix in the brain from
+        <a href="https://commons.wikimedia.org/wiki/File:Glial_Cell_Types.png">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ul>
+  <li>Ependymal cell is pink.</li>
+  <li>Astrocyte is green.</li>
+  <li>Oligodendrocyte is blue.</li>
+  <li>Microglia is red.</li>
+</ul>
+
+<p>Extracellular matrix is important to maintain the shape and regulate the processes, which are done by many different proteins. We refer to a group of neurons, glia and extracellular matrix as <em>neural tissue</em>.</p>
+
+<p>There are many proteins that provide structural and biochemical supports to cells, but some unique and important proteins in the extracellular matrix of the neural tissue are:</p>
+<ul>
+  <li><strong>Neurotrophin</strong>, or neurotrophic factor: Regulating survival, development and function of neurons, which belongs to the growth factor family. It is one of the most widely studied proteins, where <em>nerve growth factor (NGF)</em>, <em>brain-derived neurotrophic factor (BDNF)</em>, neurotrophin-3 (NT-3) and neurotrophin-4 (NT-4) belong to this.</li>
+  <li>Neuronal apoptosis inhibitory protein (NAIP): Regulating an apoptosis of a neuron, which belongs to the inhibiter of apoptosis (IAP) family.</li>
+  <li>Hippocalcin: Allowing Ca<sup>2+</sup> to bind to interact with other proteins and regulate various processes, which belongs to the neuronal calcium sensor (NCS) family.</li>
+</ul>
+
+<h2 id="nerve">Nerve</h2>
+
+<p>A <strong>nerve</strong> is composed of nerve fibres that bring the sensation signals from the body to the CNS (afferent) and that send the innervation signals from the CNS to the body (efferent), and neuroglia that wraps nerve fibres. There are two large classifications.</p>
+<ul>
+  <li><strong>Spinal nerve</strong>: Branching out from the spinal cord, so it contains <em>general nerve fibres</em>, such as GSA, GVA, GSE, and GVE nerve fibres. There are 31 pairs of spinal nerves in the human.</li>
+  <li><strong>Cranial nerve</strong>: Branching out from the brain, so it contains <em>special nerve fibres</em>, such as SSA, SVA, and SVE nerve fibres. There are 12 pairs of cranial nerves in the human.</li>
+</ul>
+
+<p>Note that this classification is little vague, where some describe them as tissue while others describe them as peripheral organ, but the general idea is that any form of a bundle of axons in the PNS is considered as nerve.</p>
+
+<p>A spinal nerve can be anatomically divided as:</p>
+
+<figure class="align-center" style="width: 600px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/3_3_nerve_anatomy.jpg" />
+    <figcaption class="figure-caption text-center">
+        A nerve anatomy from
+        <a href="https://commons.wikimedia.org/wiki/File:1319_Nerve_StructureN.jpg">
+            Wikimedia Commons
+        </a>
+    </figcaption>
+</figure>
+
+<ul>
+  <li><strong>Nerve fascicle</strong>: A bundle of axons filled with <strong>endoneurium</strong> and enclosed by <strong>perineurium</strong>. The term fascicle is also used for muscles, for instance, muscle fascicle.</li>
+  <li><strong>Fasciculus</strong>: A bundle of fascicles with blood vessel and <strong>epineurium</strong>. The spinal nerve is a fasciculus outreaching from the spinal cord.</li>
+</ul>
+
+<p>The anatomy of nerve differ extremely per location, i.e. in cranium or in the CNS, but nerve fascicle and fasciculus are generally present in all of them.</p>
+<ul>
+  <li>In the PNS, a nerve consists of a combination of nerve fibres of different directions, afferent or efferent, and different functions, somatic or visceral, with or without myelinations of Schwann cells.</li>
+  <li>While nerves in the PNS are fairly well-known, white matters in the CNS are still grey area. However, at least, we know that most of them are wrapped with myelinations of oligodendrocytes.</li>
+</ul>
+
+<h2 id="ganglion">Ganglion</h2>
+<p>A <strong>ganglion</strong> is composed of dendrites, neuronal cell bodies, axon terminals and neuroglia. There are four large classifications.</p>
+<ul>
+  <li><strong>Dorsal root ganglion</strong>, or spinal ganglion: The cell bodies of GSA and GVA, located next to spinal cord. There is not neurotransmissions inside the dorsal root ganglia. For each spinal nerve, dorsal root ganglion is held next to the spinal cord.</li>
+  <li><strong>Cranial nerve ganglion</strong>: The cell bodies of SSA, SVA and SVE, located near the brain. Some cranial nerve ganglia contain synapses for neurotransmissions and some not. Not every cranial nerve contains cranial nerve ganglion. Some cranial nerves have their cell bodies inside the brain.</li>
+  <li><strong>Autonomic ganglion</strong>: The cell bodies of GVA and GVE, located in near the spinal cord or peripheral organs. Many autonomic ganglia contain synapses for neurotransmissions. Often autonomic ganglions lie near the organs that they are responsible of.</li>
+  <li><strong>Ventral ganglion</strong>: The cell bodies of GSE nerve, located in the ventral horn inside spinal cord. The cell bodies of the GSE are not part of the PNS. They reside inside the spinal cord, so often ventral ganglion refers to <strong>ventral nucleus</strong> instead.</li>
+</ul>
+
+<p>Some ganglia act as a synaptic relay station between neurons since they contain presynaptic axon terminals and postsynaptic dendrites. The information enters to the ganglia from presynaptic neurons, excites the postsynaptic neurons in the ganglia and then exits through the nerve fibres of postsynaptic neurons. However, this is not the case for every ganglion. For instance, the cell bodies of GVA are located in either dorsal root ganglion or autonomic ganglion. This is why some autonomic functions are viable without the CNS.</p>
+
+<p>Not all of these four ganglia are part of the PNS.</p>
+<ul>
+  <li>Dorsal root ganglion, cranial nerve ganglion and autonomic ganglion belong to the PNS.</li>
+  <li>Ventral ganglion belongs to the CNS. A ganglion is often referred to as nucleus in the CNS, i.e. motor nucleus as ventral ganglion.</li>
+</ul>
+
+<p>The main differences between ganglion and grey matter is:</p>
+<ul>
+  <li>The neuroglia in ganglion are mostly satellite cells.</li>
+  <li>The neuroglia in grey matter are astrocytes and oligodendrocytes.</li>
+</ul>
+
+<h1 id="summary">Summary</h1>
+<p>Neuron</p>
+<ul>
+  <li>Neuron is anatomically divided as dendrite, cell body, axon and axon terminal</li>
+  <li>Neuron types vary morphologically, unipolar &amp; bipolar &amp; pseudounipolar &amp; multipolar &amp; pyramidal &amp; Purkinje</li>
+  <li>Neuron types vary functionally, sensory neuron &amp; interneuron &amp; motor neuron</li>
+  <li>A neurotransmission is a chemical process that transfers neurotransmitters from the presynaptic neuron and the postsynaptic neuron for action potential propagations
+    <ul>
+      <li>The presynaptic neuron releases neurotransmitters and the postsynaptic neuron takes the neurotransmitters</li>
+      <li>Neurotransmitters are commonly glutamate for excitation and GABA for inhibition</li>
+      <li>A neurotransmission either initiate or inhibit action potential propagation in the postsynaptic neuron by neurotransmitters opening the ion channels, allowing ion influx</li>
+    </ul>
+  </li>
+  <li>An action potential propagation is a electrical process that propagates action potential from the dendrites to the axon terminals for neurotransmissions
+    <ul>
+      <li>Action potential is a phenomenon that membrane potential rises and falls, from depolarization, repolarization to hyperpolarization</li>
+      <li>The changes of membrane potential is due to voltage-gated ion channels, which allows the ions to pass when the membrane potential reaches a particular voltage</li>
+      <li>Saltatory conduction is a phenomenon that an action potential propagation is speed up with myelincation since voltage-gated ion channels only appear on nodes of Ranvier</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Nerve Fibre</p>
+<ul>
+  <li>Nerve fibre types vary by location (general and special), function (somatic and autonomic) and direction (afferent and efferent)</li>
+  <li>An afferent nerve fibre is part of a sensory neuron
+    <ul>
+      <li>An afferent neuron is a synonym for sensory neuron</li>
+      <li>Afferent nerve fibre types are general somatic Afferent (GSA), General Visceral Afferent (GVA), Special Somatic Afferent (SSA) and Special Visceral Afferent (SVA)</li>
+      <li>Sensations are classified based on where the stimuli arise, exteroception and interoception</li>
+      <li>Sensations are classified based on the types of stimuli, chemosensation, mechanosensation, thermalsensation and photosensation</li>
+    </ul>
+  </li>
+  <li>An efferent Nerve Fibre is part of a motor neuron
+    <ul>
+      <li>An efferent neuron is a synonym for motor neuron</li>
+      <li>Efferent nerve fibre types are General Somatic Efferent (GSE), General Visceral Efferent (GVE) and Special Visceral Efferent (SVE)</li>
+      <li>Motor neuron types vary by Location (Upper and Lower) and Function (Somatic and Visceral)</li>
+      <li>Muscle Contraction is a result of neuromuscular transmission between motor neuron and muscle cell</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Neural Tissue</p>
+<ul>
+  <li>Neural tissue is formed by neurons, neuroglia and extracellular matrix</li>
+  <li>A bundle of axons form nerve in the PNS or white matter in the CNS</li>
+  <li>A cluster of dendrites, cell bodies, axon terminals and neuroglia form ganglion in the PNS or gray matter in the CNS</li>
+  <li>Neuroglia
+    <ul>
+      <li>Neuroglia types are ependymal cell, astrocyte, oligodendrocyte, microglia, satellite cell and Schwann cell</li>
+      <li>Extracellular matrix is formed by neuron, neuroglia and proteins</li>
+      <li>Some unique and important proteins found in the neural tissue are neurotrophin, neuronal apoptosis inhibitory protein (NAIP) and hippocalcin</li>
+    </ul>
+  </li>
+  <li>Nerve
+    <ul>
+      <li>Equivalent to white matter in the CNS</li>
+      <li>Any form of a bundle of axons in the PNS is considered as nerve</li>
+      <li>Generally, nerve contains nerve fascicle and fasciculus</li>
+      <li>Spinal nerve and cranial nerve are used to describe nerve types, but often they are grouped as peripheral nerve and classified as an organ</li>
+    </ul>
+  </li>
+  <li>Ganglion
+    <ul>
+      <li>Equivalent to gray matter in the CNS</li>
+      <li>Ganglion types are dorsal root ganglion, containing GSA and GVA, cranial nerve ganglion, containing SSA, SVA and SVE, autonomic ganglion, containing GVA and GVE, and ventral ganglion, containing GSE</li>
+      <li>Dorsal root ganglion, cranial nerve ganglion and autonomic ganglion belong to the PNS while ventral ganglion belongs to the CNS</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="overview-of-somatic-process">Overview of Somatic Process</h2>
+<p>The generic description of somatic process is as follows.</p>
+
+<figure class="align-center" style="width: 850px">
+    <img src="/assets/neuroscience/from_cells_to_systems_1/4_information_flow.png" />
+    <figcaption class="figure-caption text-center">
+        Information flow in the nervous system from
+        <a href="https://open.oregonstate.education/aandp/chapter/12-3-the-function-of-nervous-tissue/">
+            Oregon State University
+        </a>
+    </figcaption>
+</figure>
+
+<p>Well, the figure is self-explanatory, but just to point out:</p>
+<ul>
+  <li>Sensory neurons detect stimuli from sensory receptors.</li>
+  <li>Sensation signals from stimuli travel to the dorsal root ganglion through the afferent nerve fibres of the sensory neurons.</li>
+  <li>Sensation signals is transferred to the neurons of sensory pathways to travel to the brain through the spinal cord.</li>
+  <li>The brain processes the signals with interneurons and generates innervation signals.</li>
+  <li>The brain sends innervation signals to the spinal cord through upper motor neurons.</li>
+  <li>Innervation signals are sent from the spinal cord to the neuromuscular junctions through efferent nerve fibres of the lower motor neurons.</li>
+  <li>Neuromuscular transmission occurs at the neuromuscular junctions, resulting in muscle contraction.</li>
+</ul>
+
+<p>Other processes follow the same procedures, but just involve different nerve and ganglion, and perhaps additional components.</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li>https://en.m.wikipedia.org/wiki/Glia</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#neuroscience-x003a-from-cells-to-systems" class="page__taxonomy-item" rel="tag">Neuroscience&#x003a; From Cells to Systems</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-15">April 15, 2023</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Neuron+and+Neural+Tissue%20http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fneuroscience%2Fneuron_and_neural_tissue%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fneuroscience%2Fneuron_and_neural_tissue%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fposts%2Fneuroscience%2Fneuron_and_neural_tissue%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/posts/mathematics/markov_model_2_markov_decision_process/" class="pagination--pager" title="Markov Decision Process
+">Previous</a>
+    
+    
+      <a href="/posts/neuroscience/spinal_cord_brain_and_nervous_system/" class="pagination--pager" title="Spinal Cord, Brain and Nervous System
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/neuroscience/spinal_cord_brain_and_nervous_system/" rel="permalink">Spinal Cord, Brain and Nervous System
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          21 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the field of neuroscience, there are specific biological components that play unique roles. The brain serves as the primary organ for processing informati...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/mathematics/markov_model_2_markov_decision_process/" rel="permalink">Markov Decision Process
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          32 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A Markov decision process is a type of Markov models used in decision making problems, which describes the world with a controllable system. It is used to mo...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/mathematics/markov_model_1_markov_chain/" rel="permalink">Markov Chain
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          35 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">A Markov chain is the simplest form of a Markov model, which describes the world with an autonomous system. It is used to model simulations, speech recogniti...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/posts/machine_learning/decision_2_policy_based_reinforcement_learning/" rel="permalink">Policy-based Reinforcement Learning
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          39 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Policy-based reinforcement learning is one of two fundamental classes of reinforcement learning algorithms. It explicitly constructs the policy, directly map...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Kel'Logg. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/posts/neuroscience/neuron_and_neural_tissue/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/posts/neuroscience/from_cells_to_systems_1_neuron_and_neural_tissue"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kellogg-1.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+<!-- mathjax -->
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+
+  </body>
+</html>
