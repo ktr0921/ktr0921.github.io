@@ -31,8 +31,8 @@ search_full_content  : true
 markdown       : kramdown
 kramdown       :
     math_engine: mathjax
-# remote_theme   : mmistakes/minimal-mistakes@4.24.0
-theme          : minimal-mistakes-jekyll
+remote_theme   : mmistakes/minimal-mistakes@4.24.0
+# theme          : minimal-mistakes-jekyll
 
 # Outputting
 permalink: /:categories/:title/
