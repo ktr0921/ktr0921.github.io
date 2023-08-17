@@ -66,8 +66,8 @@ plugins:
 
 author:
   name   : "D. K. Ryu"
-  avatar : "/assets/images/bio-photo.jpg"
-  bio    : "Military science and technology (MS&T) research soldier in the Republic of Korea armed forces<br>Former Ph.D. candidate in reinforcement learning and natural language processing"
+  avatar : /assets/images/bio-photo.jpg
+  bio    : "Military science and technology (MS&T) research soldier in the Republic of Korea armed forces<br><br>Former Ph.D. candidate in reinforcement learning and natural language processing"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
